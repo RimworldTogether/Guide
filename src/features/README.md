@@ -2,6 +2,8 @@
 
 ## Events
 
+Read more on events at the [Events](./events.md) page.
+
 ## Factions
 
 ## In-Game Chat
@@ -29,7 +31,7 @@ Depending on the site type, they will give the following resources:
 |Site Type|Resources|
 |---|---|
 |Farmland|Potatoes|
-|Quarry|Steel ![steel](./images/Steel_c.png =20x20)|
+|Quarry|Steel|
 |Sawmill|Wood|
 |Bank|Silver|
 |Laboratory|Components|

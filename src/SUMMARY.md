@@ -7,11 +7,14 @@
 - [Getting Started](selfhosting/getting-started.md)
 - [Mod Support](selfhosting/mod-support.md)
 - [Going Public](selfhosting/going-public.md)
-- [Features](features.md)
 - [Custom Difficulty](selfhosting/difficulty.md)
-<!-- 
+
+
 # Features
+- [Overview](features/README.md)
 - [Events](features/events.md)
+
+<!--
 - [Factions](features/factions.md)
 - [Realtime Visiting](features/visiting.md)
 - [Spying](features/spying.md)
