@@ -60,7 +60,7 @@ This file stores all the world data. We do not recommend editing it mid run.
 
 ## Making your server public
 
-Full guide on going public can be found on our [Going Public Page](/selfhosting/going-public.md).
+Full guide on going public can be found on our [Going Public Page](./selfhosting/going-public.md).
 
 ## TroubleShooting
 
