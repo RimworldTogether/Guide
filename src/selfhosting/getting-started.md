@@ -64,5 +64,5 @@ Full guide on going public can be found on our [Going Public Page](https://rimwo
 
 ## TroubleShooting
 
-For additional help with troubleshooting, please join our [Discord Server](https://discord.gg/VFFSvfJTQD).
+For additional help with troubleshooting, please join our [Discord Server](https://discord.gg/NCsArSaqBW).
 
