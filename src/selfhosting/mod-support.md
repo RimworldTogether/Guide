@@ -16,5 +16,5 @@ You can use this [tool](https://github.com/Byte-Nova/Library/releases/latest) to
 
 We heavily recommend to have any mods that affect the world map or factions to be **Enforced**, as they can break things otherwise.
 
-You can find a list of our current incompatibility list [here](https://docs.google.com/spreadsheets/d/14f4oJIV82SzqNK-Tyewr0OKxVRgge8xFasivACwRlsA/edit#gid=0).
+You can find a list of our current incompatibility list [here](https://github.com/RimworldTogether/Rimworld-Together/blob/development/IncompatibilityList.md).
 
