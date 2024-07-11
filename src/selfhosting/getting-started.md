@@ -50,7 +50,7 @@ You can change various settings about the server, such as:
 You can change if you want to allow custom scenarios for clients (ex :crashlanded, mechanitor, naked brutality).
 
 #### SiteValues
-You can change the various cost and production of sites in this file. You can find out more information about sites on out [Site Page](https://rimworldtogether.github.io/Guide/features/index.html).
+You can change the various cost and production of sites in this file. You can find out more information about sites on out [Site Page](https://rimworldtogether.github.io/Guide/features/index.html#sites).
 
 #### Whitelist
 The file lets you configure if you want a whitelist or not. Simply put the in game usernames (the one used to log in) in between the brackets.
