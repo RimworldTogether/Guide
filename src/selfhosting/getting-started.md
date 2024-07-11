@@ -23,7 +23,7 @@ DLCs are considered mods, so you can treat them as mods.
 
 ### Mods
 
-Full guide on mod support can be found on our [Mod Support Page](/selfhosting/mod-support.md).
+Full guide on mod support can be found on our [Mod Support Page](https://rimworldtogether.github.io/Guide/selfhosting/mod-support.html).
 
 ### Core
 
@@ -50,7 +50,7 @@ You can change various settings about the server, such as:
 You can change if you want to allow custom scenarios for clients (ex :crashlanded, mechanitor, naked brutality).
 
 #### SiteValues
-You can change the various cost and production of sites in this file. You can find out more information about sites on out [Site Page](/features/sites.md).
+You can change the various cost and production of sites in this file. You can find out more information about sites on out [Site Page](https://rimworldtogether.github.io/Guide/features/index.html).
 
 #### Whitelist
 The file lets you configure if you want a whitelist or not. Simply put the in game usernames (the one used to log in) in between the brackets.
@@ -60,7 +60,7 @@ This file stores all the world data. We do not recommend editing it mid run.
 
 ## Making your server public
 
-Full guide on going public can be found on our [Going Public Page](./selfhosting/going-public.md).
+Full guide on going public can be found on our [Going Public Page](https://rimworldtogether.github.io/Guide/selfhosting/going-public.html).
 
 ## TroubleShooting
 
