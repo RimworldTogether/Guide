@@ -9,4 +9,5 @@ If the player you are trying to raid is online, you are given the option to enga
 
 ## To keep in mind
 * `Offline raids` load a copy of the other player's last saved state, meaning that nothing you do while in this mode will have any effect on the rest of them.
+
 * If the server has the `setting` enabled, this action has a timer of 1h that players need to wait in order to repeat it with the same player. This setting can be disabled in the `ServerConfig.json` file inside the `Core` folder of the server.

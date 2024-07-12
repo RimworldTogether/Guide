@@ -1,10 +1,9 @@
 # Summary
-
 [Introduction](README.md)
 
 # Self-Hosting
 - [Getting Started](selfhosting/getting-started.md)
-- [Mod Support](selfhosting/mod-support.md)
+- [Mods](selfhosting/mods.md)
 - [Going Public](selfhosting/going-public.md)
 
 # Features
