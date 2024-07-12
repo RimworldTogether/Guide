@@ -1,11 +1,10 @@
 # Raiding
 Traveling towards another player's settlement will allow you to raid it in different ways.
 
-## Step 1 - Getting to the settlement
-Get a `caravan` to the settlement of the player you want to raid.
+## How to use
+* Get a `caravan` to the settlement of the player you want to raid.
 
-## Step 2 - Selecting the visit mode
-If the player you are trying to raid is online, you are given the option to engage into an `online raid`. If that's not the case, you are able to do an `offline raid`.
+* If the player you are trying to raid is online, you are given the option to engage into an `online raid`. If that's not the case, you are able to do an `offline raid`.
 
 ## To keep in mind
 * `Offline raids` load a copy of the other player's last saved state, meaning that nothing you do while in this mode will have any effect on the rest of them.

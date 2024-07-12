@@ -3,6 +3,7 @@ Players are able to create sites that do certain tasks while being run.
 
 Sites are world map structures that aid players during their gameplay in RimWorld.
 
+## How to use
 To create a site, move a caravan towards a free space in the map and use the `site button`.
 
 ## Types of sites
