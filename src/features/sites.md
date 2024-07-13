@@ -13,20 +13,25 @@ To create a site, move a caravan towards a free space in the map and use the `si
 
 ## Getting rewards from them
 Depending on the site type, they will give the following resources:
-* Farmland: Potatoes.
+* `Farmland:` Potatoes.
 
-* Quarry: Steel.
+* `Quarry:` Steel.
 
-* Sawmill: Wood.
+* `Sawmill:` Wood.
 
-* Bank: Silver.
+* `Bank:` Silver.
 
-* Laboratory: Components.
+* `Laboratory:` Components.
 
-* Refinery: Chemfuel.
+* `Refinery:` Chemfuel.
 
-* Herbal workshop: Herbal medicine.
+* `Herbal workshop:` Herbal medicine.
 
-* Textile factory: Cloth.
+* `Textile factory:` Cloth.
 
-* Food processor: Simple meal.
+* `Food processor:` Simple meal.
+
+## To keep in mind
+* By default, sites come unconfigured, server owners must modify them by editing the `SiteValues.json` file inside the server `Core` folder.
+
+* Sites reward with materials every 30 real time minutes.
