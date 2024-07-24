@@ -39,3 +39,6 @@ All in-game roads are available for construction, including:
 * Stone Road
 * Asphalt Path
 * Asphalt Highway
+## Troubleshooting
+
+For additional troubleshooting assistance, please join our [Discord](https://discord.gg/NCsArSaqBW) server.
