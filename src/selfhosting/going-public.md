@@ -32,3 +32,5 @@ For local play within the same network:
 ## Troubleshooting
 
 For additional troubleshooting assistance, please join our [Discord Server](https://discord.gg/NCsArSaqBW).
+
+---
