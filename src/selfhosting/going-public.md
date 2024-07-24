@@ -35,3 +35,111 @@ For play within the same local network:
 For additional troubleshooting assistance, join our [Discord Server](https://discord.gg/NCsArSaqBW).
 
 ---
+
+# Setting Up and Running the Server Linux Edition
+
+Here's a step-by-step guide to set up and run your RimWorld Together server on Linux.
+
+## Prerequisites
+
+Ensure you have Docker installed on your Linux system. If not, follow [this guide](https://docs.docker.com/engine/install/) to install Docker.
+
+## Download and Run the Server
+
+Create a script with the following content to automatically download the latest release and run the server:
+
+```bash
+#!/bin/bash
+
+# Variables
+folder_name=RIM
+system_type=arm # possible values are arm (for Raspberry Pi), arm64, and x64
+
+# Get the latest release version tag
+latest_tag=$(curl -sL https://api.github.com/repos/RimworldTogether/Rimworld-Together/releases/latest | grep tag_name | grep -o "[0-9\\.]*")
+
+if [ -z "$latest_tag" ]; then
+    echo "Latest tag couldn't be found"
+    exit 1
+fi
+
+# Create directory and navigate into it
+mkdir -p "$folder_name"
+cd "$folder_name"
+
+# Download the latest release for your system type
+wget -S "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip"
+if [ ! -f "linux-$system_type.zip" ]; then
+    echo "File couldn't be downloaded or wrong filename"
+    exit 1
+fi
+
+# Unzip the downloaded file
+unzip "linux-$system_type.zip"
+
+# Start the server
+echo "quit" | ./GameServer
+screen -S RIMWORLD ./GameServer
+```
+
+Save this script as `start_server.sh` and make it executable:
+
+```bash
+chmod +x start_server.sh
+```
+
+Run the script to start your server:
+
+```bash
+./start_server.sh
+```
+
+## Renaming Mods
+
+To rename mods, use the following Python script to handle invalid characters and ensure proper renaming. Place this script inside your mods folder:
+
+```python
+import os
+import re
+import xml.etree.ElementTree as ET
+
+def sanitize_name(name):
+    # Replace invalid characters with underscores
+    return re.sub(r'[<>:"/\\|?*]', '_', name)
+
+required_path = "Required"
+for folder in os.listdir(required_path):
+    folder_path = os.path.join(required_path, folder)
+    if not os.path.isdir(folder_path):
+        continue
+    try:
+        int(folder)
+    except ValueError:
+        continue
+    about_path = os.path.join(folder_path, "About")
+    if not os.path.isdir(about_path):
+        continue
+    xml_file = None
+    if "About.xml" in os.listdir(about_path):
+        xml_file = "About.xml"
+    elif "about.xml" in os.listdir(about_path):
+        xml_file = "about.xml"
+    else:
+        print(f"{folder}: About.xml not found")
+        continue
+    tree = ET.parse(os.path.join(about_path, xml_file))
+    name = tree.getroot().find("name").text
+    sanitized_name = sanitize_name(name)
+    new_folder_name = f"{folder}-{sanitized_name}"
+    new_folder_path = os.path.join(required_path, new_folder_name)
+    os.rename(folder_path, new_folder_path)
+    print(f"Renamed {folder} to {new_folder_name}")
+```
+
+Save this script as `rename_mods.py` and run it to rename your mods:
+
+```bash
+python rename_mods.py
+```
+
+By following these steps, you can set up your RimWorld Together server, make it publicly accessible, and manage your mods effectively. For any issues or further assistance, join our [Discord Server](https://discord.gg/NCsArSaqBW).
