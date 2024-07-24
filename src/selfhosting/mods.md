@@ -68,7 +68,7 @@ for mod in os.listdir(mod_directory):
         print("No valid 'About.xml' file found. Skipping directory.")
 ```
 
-This script ensures mods are correctly identified and organized within your Linux-based mod directory, preventing conflicts and ensuring server stability.
+This script organizes mods within your Linux-based Steam mod directory, ensuring that mods are correctly identified and organized. Running this script inside your Steam folder will help prevent conflicts and ensure stability for your server. It's particularly useful for maintaining a clean mod environment, where each mod's folder is named consistently with its in-game name, making them easier to manage and troubleshoot.
 
 ## Troubleshooting
 
