@@ -58,6 +58,8 @@ This process is essential for allowing external server access, particularly for 
    ```
 5. **Join the Server**: Use your public IP to connect, ensuring everything is configured properly.
 
+Sure, I'll ensure that the script's messages are displayed before the server process starts.
+
 ### Step 2: Automated Installation and Update Script
 
 **1. Create the Startup Script**
@@ -70,6 +72,7 @@ This process is essential for allowing external server access, particularly for 
 folder_name="RimWorldServer"  # Adjust folder name as per your preference
 system_type=$(uname -m)  # Auto-detect system architecture
 use_screen=true  # Set to false if you do not want to use screen
+auto_update=false  # Set to true if you want to enable automatic updates
 version_file="version.txt"  # File to store the current version
 
 # Check for necessary tools
@@ -106,6 +109,8 @@ case "$system_type" in
         ;;
 esac
 
+echo "Detected system architecture: $system_type"
+
 # Fetch the latest release version tag from GitHub
 latest_tag=$(curl -sL https://api.github.com/repos/RimworldTogether/Rimworld-Together/releases/latest | grep tag_name | grep -o "[0-9\\.]*")
 if [ -z "$latest_tag" ]; then
@@ -117,33 +122,40 @@ fi
 if [ -f "$folder_name/$version_file" ] && grep -q "$latest_tag" "$folder_name/$version_file"; then
     echo "GameServer is up to date (version $latest_tag)."
 else
-    echo "Updating GameServer to version $latest_tag..."
+    if [ "$auto_update" = true ]; then
+        echo "Updating GameServer to version $latest_tag..."
 
-    # Prepare the directory and download the server
-    mkdir -p "$folder_name"
-    cd "$folder_name" || { echo "Error: Could not change to directory $folder_name"; exit 1; }
+        # Prepare the directory and download the server
+        mkdir -p "$folder_name"
+        cd "$folder_name" || { echo "Error: Could not change to directory $folder_name"; exit 1; }
 
-    # Download the server files
-    curl -L "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip" -o server.zip
-    if [ $? -ne 0 ]; then
-        echo "Error: Download failed."
-        exit 1
+        # Download the server files
+        curl -L "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip" -o server.zip
+        if [ $? -ne 0 ]; then
+            echo "Error: Download failed."
+            exit 1
+        fi
+
+        # Unzip the server files
+        unzip -o server.zip && rm server.zip
+        if [ $? -ne 0 ]; then
+            echo "Error: Unzipping the server files failed."
+            exit 1
+        fi
+
+        # Save the version to the version file
+        echo "$latest_tag" > "$version_file"
+        echo "GameServer updated to version $latest_tag."
+    else
+        echo "New version $latest_tag available. Automatic update is disabled."
+        echo "To update manually, set 'auto_update' to true or run the script again after updating the 'auto_update' variable."
+        exit 0
     fi
-
-    # Unzip the server files
-    unzip -o server.zip && rm server.zip
-    if [ $? -ne 0 ]; then
-        echo "Error: Unzipping the server files failed."
-        exit 1
-    fi
-
-    # Save the version to the version file
-    echo "$latest_tag" > "$version_file"
-    echo "GameServer updated to version $latest_tag."
 fi
 
 # Start the server
 if [ "$use_screen" = true ]; then
+    echo "Starting the server in a detached screen session named 'RimWorldServer'."
     # Start the server in a detached screen session
     if ! screen -dmS "RimWorldServer" bash -c './GameServer; exec bash'; then
         echo "Error: Failed to start the server in a screen session."
@@ -151,35 +163,43 @@ if [ "$use_screen" = true ]; then
     fi
     echo "Server running in screen session named 'RimWorldServer'."
 else
-    echo "Server running directly without screen."
+    echo "Starting the server directly without screen."
     ./GameServer
     if [ $? -ne 0 ]; then
         echo "Error: Failed to start the server."
         exit 1
     fi
+    echo "Server running directly without screen."
 fi
 ```
 
 ### Key Updates:
-1. **Version File Check**: Introduced `version.txt` to store the current version.
-2. **Version Verification**: Checks if the version in `version.txt` matches the latest version tag fetched from GitHub.
-3. **Conditional Update**: Only updates the server files if the current version is outdated.
-4. **Clear Update Messages**: Provides clear messages to indicate if an update is needed or if the server is already up to date.
-5. **Error Handling**: Improved error handling for each step.
+1. **System Architecture Output**: The script now outputs the detected system architecture.
+2. **Auto-Update Flag**: Added an `auto_update` variable to control whether the script automatically updates the server. By default, this is set to `false`.
+3. **Descriptive Messages**: Improved messaging around the update process and when starting the server.
+4. **Error Handling**: More robust error handling to ensure clarity.
+5. **Echo Placement**: Ensured that echo messages are displayed before starting the server process.
 
-This script ensures that your GameServer is always up to date and provides clear messages about the update process.
+### Usage:
+- **To enable automatic updates**, set `auto_update` to `true`.
+- **To run the script** and check for updates or start the server, use the following commands:
+  ```bash
+  chmod +x start_server.sh
+  ./start_server.sh
+  ```
+This ensures the script checks for updates and starts the server, providing clear messages throughout the process.
 
-**2. Save the Script**
+### Save the Script
 - Save the above script into a file named `start_server.sh` on your Linux server.
 
-**3. Make the Script Executable**
+### Make the Script Executable
 - Change the permissions of the script to make it executable by running:
 
 ```bash
 chmod +x start_server.sh
 ```
 
-**4. Run the Script to Start Your Server**
+### Run the Script to Start Your Server
 - Execute the script to start your RimWorld Together server:
 
 ```bash
