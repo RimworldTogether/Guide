@@ -67,11 +67,25 @@ This process is essential for allowing external server access, particularly for 
 #!/bin/bash
 
 # Define folder and system type
-folder_name="RimWorldServer"  # Adjust folder name to preference
-system_type=$(uname -m)  # Auto-detects architecture
+folder_name="RimWorldServer"  # Adjust folder name as per your preference
+system_type=$(uname -m)  # Auto-detect system architecture
+use_screen=true  # Set to false if you do not want to use screen
 
-# Define variables for clarity
-supported_architectures="x64, arm (ARMv7l/ARMv6l), arm64 (Aarch64)"
+# Check for necessary tools
+if ! command -v curl &>/dev/null; then
+    echo "Error: This script requires 'curl'. Please install it before running this script."
+    exit 1
+fi
+
+if ! command -v unzip &>/dev/null; then
+    echo "Error: This script requires 'unzip'. Please install it before running this script."
+    exit 1
+fi
+
+if [ "$use_screen" = true ] && ! command -v screen &>/dev/null; then
+    echo "Error: This script requires 'screen'. Please install it or set 'use_screen' to false."
+    exit 1
+fi
 
 # Adjust system type based on architecture
 case "$system_type" in
@@ -85,29 +99,61 @@ case "$system_type" in
         system_type="arm64"
         ;;
     *)
-        echo "Unsupported architecture ($system_type)."
-        echo "This script supports the following architectures: $supported_architectures."
+        echo "Error: Unsupported architecture ($system_type)."
+        echo "This script supports the following architectures: x64, arm (ARMv7l/ARMv6l), arm64 (Aarch64)."
         exit 1
         ;;
 esac
 
 # Fetch the latest release version tag from GitHub
-latest_tag=$(curl -s https://api.github.com/repos/RimworldTogether/Rimworld-Together/releases/latest | grep tag_name | grep -o "[0-9\\.]*")
+latest_tag=$(curl -sL https://api.github.com/repos/RimworldTogether/Rimworld-Together/releases/latest | grep tag_name | grep -o "[0-9\\.]*")
 if [ -z "$latest_tag" ]; then
-    echo "Version not found."
+    echo "Error: Could not fetch the latest version tag from GitHub."
     exit 1
 fi
 
 # Prepare the directory and download the server
 mkdir -p "$folder_name"
-cd "$folder_name" || exit
-wget -q "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip" -O server.zip
-unzip -o server.zip && rm server.zip
+cd "$folder_name" || { echo "Error: Could not change to directory $folder_name"; exit 1; }
 
-# Start the server in a detached screen session
-screen -S "RimWorldServer" -dm bash -c './GameServer; exec bash'
-echo "Server running in screen session named 'RimWorldServer'."
+# Download the server files
+curl -L "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip" -o server.zip
+if [ $? -ne 0 ]; then
+    echo "Error: Download failed."
+    exit 1
+fi
+
+# Unzip the server files
+unzip -o server.zip && rm server.zip
+if [ $? -ne 0 ]; then
+    echo "Error: Unzipping the server files failed."
+    exit 1
+fi
+
+# Start the server
+if [ "$use_screen" = true ]; then
+    # Start the server in a detached screen session
+    if ! screen -dmS "RimWorldServer" bash -c './GameServer; exec bash'; then
+        echo "Error: Failed to start the server in a screen session."
+        exit 1
+    fi
+    echo "Server running in screen session named 'RimWorldServer'."
+else
+    echo "Server running directly without screen."
+    ./GameServer
+    if [ $? -ne 0 ]; then
+        echo "Error: Failed to start the server."
+        exit 1
+    fi
+fi
 ```
+
+### Key Points:
+1. **Tool Checks**: Ensures `curl`, `unzip`, and `screen` (if used) are installed before proceeding.
+2. **Architecture Detection**: Automatically detects the system architecture and adjusts download accordingly.
+3. **Error Handling**: Checks for errors at each step (e.g., directory change, file download, unzip, server start).
+4. **Conditional Execution**: Allows for running the server in a detached screen session or directly, based on the `use_screen` variable.
+5. **Clear Messages**: Provides clear error and status messages for easier debugging and user feedback.
 
 **2. Save the Script**
 - Save the above script into a file named `start_server.sh` on your Linux server.
