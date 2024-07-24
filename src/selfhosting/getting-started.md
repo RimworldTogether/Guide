@@ -20,7 +20,7 @@ This guide will help you set up your own server with our mod. Follow these steps
    Open the folder and run the server application. A terminal window will open, and the server should start automatically.
 
 3. **Join the Server**  
-   You can now join your server through the in-game menu. For detailed instructions on joining, refer to our client guide.
+   Connect to your server through the in-game menu using the address `127.0.0.1` and the default port `25555`. For detailed joining instructions, refer to our [Going Public guide](https://rimworldtogether.github.io/Guide/selfhosting/going-public.html).
 
 ### World Creation
 
@@ -29,7 +29,7 @@ This guide will help you set up your own server with our mod. Follow these steps
 
 ## DLCs
 
-DLC files are available on our [GitHub Page](https://github.com/RimworldTogether/Rimworld-Together) for server-side use only. Treat DLCs as mods.
+DLC files, available as `Extras.zip`, can be found on our [GitHub Page](https://github.com/RimworldTogether/Rimworld-Together) and are intended for server-side use only. Treat DLCs as mods.
 
 ## Configuration Files
 
