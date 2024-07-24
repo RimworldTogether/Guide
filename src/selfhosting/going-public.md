@@ -36,110 +36,92 @@ For additional troubleshooting assistance, join our [Discord Server](https://dis
 
 ---
 
-# Setting Up and Running the Server Linux Edition
+## **Linux Server Setup and Management Guide for RimWorld Together**
 
-Here's a step-by-step guide to set up and run your RimWorld Together server on Linux.
+### **1. Making Your Server Public**
 
-## Prerequisites
+#### **Port Forwarding (Advanced)**
+Port forwarding is necessary to allow external access to your server. This method requires familiarity with Linux command line and network settings:
 
-Ensure you have Docker installed on your Linux system. If not, follow [this guide](https://docs.docker.com/engine/install/) to install Docker.
+1. **Get Your Private IP**: Open a terminal and type `ip a` or `ifconfig` (depending on your distribution). Find the IPv4 address associated with your network interface (e.g., `eth0` or `wlan0`), which usually looks like `192.168.x.x`.
+2. **Access Router Settings**: Type the default gateway address (found in the `ip a` or `ifconfig` output) into your web browser to access your router’s settings.
+3. **Set Up Port Forwarding**: Navigate to the port forwarding section, often found under "Advanced Settings" in the router's interface. Create a new rule for TCP port 25555 (or another port if your setup differs), assigning it to the private IP address noted earlier. Save or apply the changes.
+4. **Configure Firewall on Linux**: Ensure your Linux firewall allows traffic on the server port:
+   ```bash
+   sudo iptables -A INPUT -p tcp --dport 25555 -j ACCEPT  # For iptables
+   sudo ufw allow 25555/tcp                              # For UFW (Uncomplicated Firewall)
+   ```
+5. **Join the Server**: Connect to your server using the public IP address (find your public IP via websites like [WhatIsMyIPAddress](https://whatismyipaddress.com/)). Ensure your server is operational and that the port forwarding is correctly set up.
 
-## Download and Run the Server
+### **2. Automated Installation and Update Script**
 
-Create a script with the following content to automatically download the latest release and run the server:
+This Bash script automates downloading, updating, and running the latest release of the RimWorld Together server on Linux:
 
 ```bash
 #!/bin/bash
 
-# Variables
-folder_name=RIM
-system_type=arm # possible values are arm (for Raspberry Pi), arm64, and x64
+# Define variables
+folder_name="RimWorldServer"
+system_type=$(uname -m)  # Dynamically determines the system architecture
 
-# Get the latest release version tag
+# Adjust system type for the download URL
+case "$system_type" in
+    x86_64) system_type="x64" ;;
+    arm*) system_type="arm" ;;
+    aarch64) system_type="arm64" ;;
+    *) echo "Unsupported architecture"; exit 1 ;;
+esac
+
+# Fetch the latest release version tag from GitHub
 latest_tag=$(curl -sL https://api.github.com/repos/RimworldTogether/Rimworld-Together/releases/latest | grep tag_name | grep -o "[0-9\\.]*")
 
 if [ -z "$latest_tag" ]; then
-    echo "Latest tag couldn't be found"
+    echo "Failed to find the latest version."
     exit 1
 fi
 
-# Create directory and navigate into it
+# Prepare the installation directory
 mkdir -p "$folder_name"
-cd "$folder_name"
+cd "$folder_name" || exit
 
-# Download the latest release for your system type
-wget -S "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip"
-if [ ! -f "linux-$system_type.zip" ]; then
-    echo "File couldn't be downloaded or wrong filename"
-    exit 1
-fi
+# Download and unzip the latest version
+wget "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip"
+unzip -o "linux-$system_type.zip"
 
-# Unzip the downloaded file
-unzip "linux-$system_type.zip"
-
-# Start the server
-echo "quit" | ./GameServer
-screen -S RIMWORLD ./GameServer
+# Start the server in a new screen session
+screen -S "RimWorldServer" -dm bash -c './GameServer; exec bash'
+echo "Server started in a detached screen session."
 ```
 
-Save this script as `start_server.sh` and make it executable:
+### **3. Renaming Mods with Python**
 
-```bash
-chmod +x start_server.sh
-```
-
-Run the script to start your server:
-
-```bash
-./start_server.sh
-```
-
-## Renaming Mods
-
-To rename mods, use the following Python script to handle invalid characters and ensure proper renaming. Place this script inside your mods folder:
+This Python script renames mod directories to their in-game names, helping manage mod files effectively:
 
 ```python
 import os
-import re
 import xml.etree.ElementTree as ET
+import re
 
-def sanitize_name(name):
-    # Replace invalid characters with underscores
+def sanitize_filename(name):
     return re.sub(r'[<>:"/\\|?*]', '_', name)
 
-required_path = "Required"
-for folder in os.listdir(required_path):
-    folder_path = os.path.join(required_path, folder)
-    if not os.path.isdir(folder_path):
-        continue
-    try:
-        int(folder)
-    except ValueError:
-        continue
-    about_path = os.path.join(folder_path, "About")
+mod_directory = "/path/to/your/mods"
+
+for mod in os.listdir(mod_directory):
+    about_path = os.path.join(mod_directory, mod, "About")
     if not os.path.isdir(about_path):
         continue
-    xml_file = None
-    if "About.xml" in os.listdir(about_path):
-        xml_file = "About.xml"
-    elif "about.xml" in os.listdir(about_path):
-        xml_file = "about.xml"
-    else:
-        print(f"{folder}: About.xml not found")
-        continue
-    tree = ET.parse(os.path.join(about_path, xml_file))
-    name = tree.getroot().find("name").text
-    sanitized_name = sanitize_name(name)
-    new_folder_name = f"{folder}-{sanitized_name}"
-    new_folder_path = os.path.join(required_path, new_folder_name)
-    os.rename(folder_path, new_folder_path)
-    print(f"Renamed {folder} to {new_folder_name}")
+    xml_file = next((f for f in os.listdir(about_path) if f.lower() == "about.xml"), None)
+    if xml_file:
+        tree = ET.parse(os.path.join(about_path, xml_file))
+        mod_name = sanitize_filename(tree.getroot().find('name').text)
+        new_dir_name = os.path.join(mod_directory, f"{mod}-{mod_name}")
+        os.rename(os.path.join(mod_directory, mod), new_dir_name)
+        print(f"Renamed {mod} to {new_dir_name}")
 ```
 
-Save this script as `rename_mods.py` and run it to rename your mods:
+### **Troubleshooting**
 
-```bash
-python rename_mods.py
-```
+For additional help or community support, join the [RimWorld Together Discord Server](https://discord.gg/NCsArSaqBW).
 
-By following these steps, you can set up your RimWorld Together server, make it publicly accessible, and manage your mods effectively. For any issues or further assistance, join our [Discord Server](https://discord.gg/NCsArSaqBW).
+---
