@@ -61,7 +61,7 @@ This Bash script automates downloading, updating, and running the latest release
 #!/bin/bash
 
 # Define variables
-folder_name="RimWorldServer"
+folder_name="RimWorldServer"  # Set the folder name as per your preference
 system_type=$(uname -m)  # Dynamically determines the system architecture
 
 # Adjust system type for the download URL
