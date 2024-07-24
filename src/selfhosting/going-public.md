@@ -70,12 +70,25 @@ This process is essential for allowing external server access, particularly for 
 folder_name="RimWorldServer"  # Adjust folder name to preference
 system_type=$(uname -m)  # Auto-detects architecture
 
+# Define variables for clarity
+supported_architectures="x64, arm (ARMv7l/ARMv6l), arm64 (Aarch64)"
+
 # Adjust system type based on architecture
 case "$system_type" in
-    x86_64) system_type="x64";;
-    arm*) system_type="arm";;
-    aarch64) system_type="arm64";;
-    *) echo "Unsupported architecture"; exit 1;;
+    x86_64)
+        system_type="x64"
+        ;;
+    armv7l|armv6l)
+        system_type="arm"
+        ;;
+    aarch64)
+        system_type="arm64"
+        ;;
+    *)
+        echo "Unsupported architecture ($system_type)."
+        echo "This script supports the following architectures: $supported_architectures."
+        exit 1
+        ;;
 esac
 
 # Fetch the latest release version tag from GitHub
