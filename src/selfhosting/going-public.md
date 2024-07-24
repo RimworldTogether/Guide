@@ -70,6 +70,7 @@ This process is essential for allowing external server access, particularly for 
 folder_name="RimWorldServer"  # Adjust folder name as per your preference
 system_type=$(uname -m)  # Auto-detect system architecture
 use_screen=true  # Set to false if you do not want to use screen
+version_file="version.txt"  # File to store the current version
 
 # Check for necessary tools
 if ! command -v curl &>/dev/null; then
@@ -112,22 +113,33 @@ if [ -z "$latest_tag" ]; then
     exit 1
 fi
 
-# Prepare the directory and download the server
-mkdir -p "$folder_name"
-cd "$folder_name" || { echo "Error: Could not change to directory $folder_name"; exit 1; }
+# Check if the version is up to date
+if [ -f "$folder_name/$version_file" ] && grep -q "$latest_tag" "$folder_name/$version_file"; then
+    echo "GameServer is up to date (version $latest_tag)."
+else
+    echo "Updating GameServer to version $latest_tag..."
 
-# Download the server files
-curl -L "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip" -o server.zip
-if [ $? -ne 0 ]; then
-    echo "Error: Download failed."
-    exit 1
-fi
+    # Prepare the directory and download the server
+    mkdir -p "$folder_name"
+    cd "$folder_name" || { echo "Error: Could not change to directory $folder_name"; exit 1; }
 
-# Unzip the server files
-unzip -o server.zip && rm server.zip
-if [ $? -ne 0 ]; then
-    echo "Error: Unzipping the server files failed."
-    exit 1
+    # Download the server files
+    curl -L "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip" -o server.zip
+    if [ $? -ne 0 ]; then
+        echo "Error: Download failed."
+        exit 1
+    fi
+
+    # Unzip the server files
+    unzip -o server.zip && rm server.zip
+    if [ $? -ne 0 ]; then
+        echo "Error: Unzipping the server files failed."
+        exit 1
+    fi
+
+    # Save the version to the version file
+    echo "$latest_tag" > "$version_file"
+    echo "GameServer updated to version $latest_tag."
 fi
 
 # Start the server
@@ -148,12 +160,14 @@ else
 fi
 ```
 
-### Key Points:
-1. **Tool Checks**: Ensures `curl`, `unzip`, and `screen` (if used) are installed before proceeding.
-2. **Architecture Detection**: Automatically detects the system architecture and adjusts download accordingly.
-3. **Error Handling**: Checks for errors at each step (e.g., directory change, file download, unzip, server start).
-4. **Conditional Execution**: Allows for running the server in a detached screen session or directly, based on the `use_screen` variable.
-5. **Clear Messages**: Provides clear error and status messages for easier debugging and user feedback.
+### Key Updates:
+1. **Version File Check**: Introduced `version.txt` to store the current version.
+2. **Version Verification**: Checks if the version in `version.txt` matches the latest version tag fetched from GitHub.
+3. **Conditional Update**: Only updates the server files if the current version is outdated.
+4. **Clear Update Messages**: Provides clear messages to indicate if an update is needed or if the server is already up to date.
+5. **Error Handling**: Improved error handling for each step.
+
+This script ensures that your GameServer is always up to date and provides clear messages about the update process.
 
 **2. Save the Script**
 - Save the above script into a file named `start_server.sh` on your Linux server.
