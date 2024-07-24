@@ -276,7 +276,7 @@ for folder in os.listdir(required_path):
     else:
         print(f"No valid 'About.xml' file found in {about_path}. Skipping directory.")
 ```
-
+For more information on [Mods](https://rimworldtogether.github.io/Guide/selfhosting/mods.html)
 ### Troubleshooting
 Visit the [RimWorld Together Discord Server](https://discord.gg/NCsArSaqBW) for community support.
 ---
