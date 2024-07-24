@@ -152,9 +152,8 @@ def sanitize_filename(name):
 
 def find_correct_xml_file(files):
     """ Return 'About.xml' if present, otherwise the first XML file in the list. """
-    for file in files:
-        if file == "About.xml":
-            return "About.xml"
+    if "About.xml" in files:
+        return "About.xml"```
     return files[0] if files else None
 
 # Process each directory in the mods directory
