@@ -192,7 +192,9 @@ fi
   ```
 
 ### Save the Script
-- Save the script into a file named `start_server.sh` on your Linux server.
+- Save the script into a file named `start
+
+_server.sh` on your Linux server.
 
 ### Make the Script Executable
 - Change the permissions of the script to make it executable by running:
@@ -209,8 +211,6 @@ fi
 This script will:
 - Automatically detect the architecture of your system and adjust the download URL accordingly.
 - Fetch the latest version of the server software from the RimWorld Together GitHub repository.
-
-
 - Unzip the server files into a specified directory and clean up the downloaded zip file.
 - Start the server inside a `screen` session, allowing the server to run in the background and be reattached at any time.
 
@@ -218,73 +218,12 @@ This script will:
 
 ---
 
-### Renaming Mods with Python
+# Additional Notes
 
-Ensures proper naming conventions for mod directories:
+Please head over to the [Mods section](https://rimworldtogether.github.io/Guide/selfhosting/mods.html) of the guide to finish setting up your server's mods
 
-```python
-import os
-import xml.etree.ElementTree as ET
-import re
+## Troubleshooting
 
-# Define the directory where mods are stored
-required_paths = [
-    "/path/to/your/mods/1",  # Example path, adjust as necessary (Forbidden)
-    "/path/to/your/mods/2",  # Example path, adjust as necessary (Optional)
-    "/path/to/your/mods/3"   # Example path, adjust as necessary (Required)
-]
+For additional support or to discuss mod-related issues, join our [Discord Server](https://discord.gg/NCsArSaqBW).
 
-def sanitize_filename(name):
-    """ Sanitize filenames to remove characters that might cause issues in file systems. """
-    return re.sub(r'[<>:"/\\|?*]', '_', name)
-
-def find_correct_xml_file(files):
-    """ Return 'About.xml' if present, otherwise the first XML file in the list. """
-    if "About.xml" in files:
-        return "About.xml"
-    return files[0] if files else None
-
-for required_path in required_paths:
-    for mod in os.listdir(required_path):
-        folder_path = os.path.join(required_path, mod)
-
-        # Ensure the folder is a directory and has a numeric ID
-        if not os.path.isdir(folder_path):
-            continue
-        try:
-            int(mod)  # This checks if the folder name is an integer (mod ID)
-        except ValueError:
-            continue  # Skip processing if the folder name is not an integer
-
-        about_path = os.path.join(folder_path, "About")
-        if not os.path.isdir(about_path):
-            continue
-
-        xml_files = [f for f in os.listdir(about_path) if f.lower() == 'about.xml']
-        selected_xml_file = find_correct_xml_file(xml_files)
-
-        if selected_xml_file:
-            current_filepath = os.path.join(about_path, selected_xml_file)
-            correct_filepath = os.path.join(about_path, "About.xml")
-
-            if selected_xml_file != "About.xml":
-                os.rename(current_filepath, correct_filepath)
-                print(f"Renamed {selected_xml_file} to 'About.xml' in {about_path}")
-
-            tree = ET.parse(correct_filepath)
-            mod_name = sanitize_filename(tree.getroot().find('name').text)
-            new_dir_name = os.path.join(required_path, f"{mod}-{mod_name}")
-
-            if not os.path.exists(new_dir_name):
-                os.rename(folder_path, new_dir_name)
-                print(f"Renamed {folder_path} to {new_dir_name}")
-        else:
-            print(f"No valid 'About.xml' file found in {about_path}. Skipping directory.")
-```
-
-This script will go through all specified directories (`required_paths`) and process the mod directories to rename them correctly. Adjust the paths in `required_paths` as necessary for your environment.
-For more information on [Mods](https://rimworldtogether.github.io/Guide/selfhosting/mods.html)
-
-# Troubleshooting
-#### Visit the [RimWorld Together Discord Server](https://discord.gg/NCsArSaqBW) for community support.
 ---
