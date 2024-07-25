@@ -1,10 +1,11 @@
 
 ---
+
 # Mods
 
 Setting up your server correctly includes configuring your mods effectively. Here’s how mods can be categorized:
 
-* **Enforced Mods**: Essential for connection; clients must have these mods installed to join the server.
+* **Required/Enforced Mods**: Essential for connection; clients must have these mods installed to join the server.
 * **Optional Mods**: Not necessary for connection; clients can join the server without these mods.
 * **Forbidden Mods**: Prohibited from use; clients with these mods installed cannot connect. This is useful for servers with strict mod policies.
 
@@ -29,42 +30,58 @@ import xml.etree.ElementTree as ET
 import re
 
 def sanitize_filename(name):
-    """ Sanitize filenames to remove characters that might cause issues in file systems. """
+    """Sanitize filenames to remove characters that might cause issues in file systems."""
     return re.sub(r'[<>:"/\\|?*]', '_', name)
 
 def find_correct_xml_file(files):
-    """ Prioritize 'About.xml' over 'about.xml' and return the correct file name. """
-    for file in files:
-        if file == "About.xml":
-            return "About.xml"
+    """Return 'About.xml' if present, otherwise the first XML file in the list."""
+    if "About.xml" in files:
+        return "About.xml"
     return files[0] if files else None
 
-mod_directory = "/path/to/your/mods"  # Adjust this path for your Linux system
+# Define the directories where mods are stored
+mod_directories = [
+    "/path/to/your/mods/required-enforced",  # Adjust this path for your Linux system
+    "/path/to/your/mods/optional",
+    "/path/to/your/mods/forbidden"
+]
 
-for mod in os.listdir(mod_directory):
-    about_path = os.path.join(mod_directory, mod, "About")
-    if not os.path.isdir(about_path):
-        continue
-    xml_files = [f for f in os.listdir(about_path) if f.lower() == 'about.xml']
-    selected_xml_file = find_correct_xml_file(xml_files)
+for mod_directory in mod_directories:
+    for mod in os.listdir(mod_directory):
+        folder_path = os.path.join(mod_directory, mod)
 
-    if selected_xml_file:
-        current_filepath = os.path.join(about_path, selected_xml_file)
-        correct_filepath = os.path.join(about_path, "About.xml")
-        
-        if selected_xml_file != "About.xml":
-            os.rename(current_filepath, correct_filepath)
-            print(f"Renamed {selected_xml_file} to 'About.xml' in {about_path}")
+        # Ensure the folder is a directory and has a numeric ID
+        if not os.path.isdir(folder_path):
+            continue
+        try:
+            int(mod)  # This checks if the folder name is an integer (mod ID)
+        except ValueError:
+            continue  # Skip processing if the folder name is not an integer
 
-        tree = ET.parse(correct_filepath)
-        mod_name = sanitize_filename(tree.getroot().find('name').text)
-        new_dir_name = os.path.join(mod_directory, f"{mod}-{mod_name}")
-        
-        if not os.path.exists(new_dir_name):
-            os.rename(os.path.join(mod_directory, mod), new_dir_name)
-            print(f"Renamed {mod} to {new_dir_name}")
-    else:
-        print("No valid 'About.xml' file found. Skipping directory.")
+        about_path = os.path.join(folder_path, "About")
+        if not os.path.isdir(about_path):
+            continue
+
+        xml_files = [f for f in os.listdir(about_path) if f.lower() == 'about.xml']
+        selected_xml_file = find_correct_xml_file(xml_files)
+
+        if selected_xml_file:
+            current_filepath = os.path.join(about_path, selected_xml_file)
+            correct_filepath = os.path.join(about_path, "About.xml")
+
+            if selected_xml_file != "About.xml":
+                os.rename(current_filepath, correct_filepath)
+                print(f"Renamed {selected_xml_file} to 'About.xml' in {about_path}")
+
+            tree = ET.parse(correct_filepath)
+            mod_name = sanitize_filename(tree.getroot().find('name').text)
+            new_dir_name = os.path.join(mod_directory, f"{mod}-{mod_name}")
+
+            if not os.path.exists(new_dir_name):
+                os.rename(folder_path, new_dir_name)
+                print(f"Renamed {folder_path} to {new_dir_name}")
+        else:
+            print(f"No valid 'About.xml' file found in {about_path}. Skipping directory.")
 ```
 
 **Note:** This script organizes mods within a copied version of your Linux-based Steam mod directory, ensuring that mods are correctly identified and organized. Running this script inside your Steam folder is not recommended as it will rename Steam folders. Instead, apply it to a copy to prevent conflicts and ensure stability for your server. It's particularly useful for maintaining a clean mod environment, where each mod's folder is named consistently with its in-game name, making them easier to manage and troubleshoot.
@@ -72,4 +89,5 @@ for mod in os.listdir(mod_directory):
 ## Troubleshooting
 
 #### For additional support or to discuss mod-related issues, join our [Discord Server](https://discord.gg/NCsArSaqBW).
+
 ---
