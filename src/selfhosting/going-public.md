@@ -1,10 +1,11 @@
 
 ---
+
 # Making Your Server Public
 
 To make your server publicly accessible, you have several options depending on your setup:
 
-### Port Forwarding (Advanced)
+## Port Forwarding (Advanced)
 Port forwarding enables external access to your server. Here's how to configure it:
 
 1. **Get Your Private IP**:
@@ -16,9 +17,11 @@ Port forwarding enables external access to your server. Here's how to configure 
 
 3. **Set Up Port Forwarding**: Navigate to the port forwarding section, typically found under "Advanced". Create a rule for TCP port 25555, assigning it to your IPv4 address, and save the configuration.
 
-4. **Join the Server**: Use your public IP (discoverable via [WhatIsMyIPAddress](https://whatismyipaddress.com/)) to connect. Ensure the server is operational and the setup is correct.
+4. **Enable Device Communication**: In your router settings, ensure that devices on your network are allowed to communicate with each other. This is often found under settings like "LAN Isolation" or "Device Communication".
 
-### VPN Tunneling (Windows Only)
+5. **Join the Server**: Use your public IP (discoverable via [WhatIsMyIPAddress](https://whatismyipaddress.com/)) to connect. Ensure the server is operational and the setup is correct.
+
+## VPN Tunneling (Windows Only)
 Use a VPN to simplify server sharing without complex router configurations:
 
 1. **Download and Install VPN**: We recommend using [Radmin VPN](https://www.radmin-vpn.com/).
@@ -26,14 +29,15 @@ Use a VPN to simplify server sharing without complex router configurations:
 3. **Invite Friends**: Share the network details with your friends so they can join.
 4. **Connect to the Server**: Use the VPN-generated IP to establish a connection.
 
-### LAN (Local Area Network)
+## LAN (Local Area Network)
 For local network connections without internet:
 
 1. **Get Your Private IP**: Retrieve your private IP using `ipconfig` (Windows) or `ip a` (Linux).
 2. **Configure the Server**: Input the private IP into your server's configuration.
-3. **Join the Server**: Connect using the private IP address. Ensure your firewall settings allow traffic on the server port.
+3. **Enable Device Communication**: In your router settings, ensure that devices on your network are allowed to communicate with each other.
+4. **Join the Server**: Connect using the private IP address. Ensure your firewall settings allow traffic on the server port.
 
-### Troubleshooting
+## Troubleshooting
 For additional support, join our [Discord Server](https://discord.gg/NCsArSaqBW).
 
 ---
@@ -224,7 +228,11 @@ import xml.etree.ElementTree as ET
 import re
 
 # Define the directory where mods are stored
-required_path = "/path/to/your/mods"
+required_paths = [
+    "/path/to/your/mods/1",  # Example path, adjust as necessary (Forbidden)
+    "/path/to/your/mods/2",  # Example path, adjust as necessary (Optional)
+    "/path/to/your/mods/3"   # Example path, adjust as necessary (Required)
+]
 
 def sanitize_filename(name):
     """ Sanitize filenames to remove characters that might cause issues in file systems. """
@@ -236,46 +244,45 @@ def find_correct_xml_file(files):
         return "About.xml"
     return files[0] if files else None
 
-# Process each directory in the mods directory
-for folder in os.listdir(required_path):
-    folder_path = os.path.join(required_path, folder)
-    
-    # Ensure the folder is a directory and has a numeric ID
-    if not os.path.isdir(folder_path):
-        continue
-    try:
-        int(folder)  # This checks if the folder name is an integer (mod ID)
-    except ValueError:
-        continue  # Skip processing if the folder name is not an integer
+for required_path in required_paths:
+    for mod in os.listdir(required_path):
+        folder_path = os.path.join(required_path, mod)
 
-    about_path = os.path.join(folder_path, "About")
-    if not os.path.isdir(about_path):
-        continue
+        # Ensure the folder is a directory and has a numeric ID
+        if not os.path.isdir(folder_path):
+            continue
+        try:
+            int(mod)  # This checks if the folder name is an integer (mod ID)
+        except ValueError:
+            continue  # Skip processing if the folder name is not an integer
 
-    xml_files = [f for f in os.listdir(about_path) if f.lower() == 'about.xml']
-    selected_xml_file = find_correct_xml_file(xml_files)
+        about_path = os.path.join(folder_path, "About")
+        if not os.path.isdir(about_path):
+            continue
 
-    if selected_xml_file:
-        current_filepath = os.path.join(about_path, selected_xml_file)
-        correct_filepath = os.path.join(about_path, "About.xml")
-        
-        # Rename to "About.xml" if necessary
-        if selected_xml_file != "About.xml":
-            os.rename(current_filepath, correct_filepath)
-            print(f"Renamed {selected_xml_file} to 'About.xml' in {about_path}")
+        xml_files = [f for f in os.listdir(about_path) if f.lower() == 'about.xml']
+        selected_xml_file = find_correct_xml_file(xml_files)
 
-        # Parse the XML and extract the mod name
-        tree = ET.parse(correct_filepath)
-        mod_name = sanitize_filename(tree.getroot().find('name').text)
-        new_dir_name = os.path.join(required_path, f"{folder}-{mod_name}")
-        
-        # Rename the directory to include the mod name
-        if not os.path.exists(new_dir_name):
-            os.rename(folder_path, new_dir_name)
-            print(f"Renamed {folder_path} to {new_dir_name}")
-    else:
-        print(f"No valid 'About.xml' file found in {about_path}. Skipping directory.")
+        if selected_xml_file:
+            current_filepath = os.path.join(about_path, selected_xml_file)
+            correct_filepath = os.path.join(about_path, "About.xml")
+
+            if selected_xml_file != "About.xml":
+                os.rename(current_filepath, correct_filepath)
+                print(f"Renamed {selected_xml_file} to 'About.xml' in {about_path}")
+
+            tree = ET.parse(correct_filepath)
+            mod_name = sanitize_filename(tree.getroot().find('name').text)
+            new_dir_name = os.path.join(required_path, f"{mod}-{mod_name}")
+
+            if not os.path.exists(new_dir_name):
+                os.rename(folder_path, new_dir_name)
+                print(f"Renamed {folder_path} to {new_dir_name}")
+        else:
+            print(f"No valid 'About.xml' file found in {about_path}. Skipping directory.")
 ```
+
+This script will go through all specified directories (`required_paths`) and process the mod directories to rename them correctly. Adjust the paths in `required_paths` as necessary for your environment.
 For more information on [Mods](https://rimworldtogether.github.io/Guide/selfhosting/mods.html)
 
 # Troubleshooting
