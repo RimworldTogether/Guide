@@ -68,52 +68,39 @@ Sure, I'll ensure that the script's messages are displayed before the server pro
 ```bash
 #!/bin/bash
 
-# Define folder and system type
+# Configuration
 folder_name="RimWorldServer"  # Adjust folder name as per your preference
 system_type=$(uname -m)  # Auto-detect system architecture
 use_screen=true  # Set to false if you do not want to use screen
 auto_update=false  # Set to true if you want to enable automatic updates
+force_old_start=false  # Set to true to skip update prompts and start the old version
 version_file="version.txt"  # File to store the current version
 
 echo "Starting RimWorld Together server setup..."
 
 # Check for necessary tools
-if ! command -v curl &>/dev/null; then
-    echo "Error: This script requires 'curl'. Please install it before running this script."
-    exit 1
-fi
-
-if ! command -v unzip &>/dev/null; then
-    echo "Error: This script requires 'unzip'. Please install it before running this script."
-    exit 1
-fi
+for tool in curl unzip; do
+    if ! command -v $tool &>/dev/null; then
+        echo "Error: $tool is required but not installed."
+        exit 1
+    fi
+done
 
 if [ "$use_screen" = true ] && ! command -v screen &>/dev/null; then
-    echo "Error: This script requires 'screen'. Please install it or set 'use_screen' to false."
+    echo "Error: screen is required but not installed. Set use_screen to false if you do not want to use it."
     exit 1
 fi
 
-# Adjust system type based on architecture
+# Detect system architecture
 case "$system_type" in
-    x86_64)
-        system_type="x64"
-        ;;
-    armv7l|armv6l)
-        system_type="arm"
-        ;;
-    aarch64)
-        system_type="arm64"
-        ;;
-    *)
-        echo "Error: Unsupported architecture ($system_type)."
-        echo "This script supports the following architectures: x64, arm (ARMv7l/ARMv6l), arm64 (Aarch64)."
-        exit 1
-        ;;
+    x86_64) system_type="x64" ;;
+    armv7l|armv6l) system_type="arm" ;;
+    aarch64) system_type="arm64" ;;
+    *) echo "Error: Unsupported architecture ($system_type). Supported: x64, arm, arm64."; exit 1 ;;
 esac
-
 echo "Detected system architecture: $system_type"
 
-# Fetch the latest release version tag from GitHub
+# Fetch the latest version tag from GitHub
 echo "Fetching the latest version tag from GitHub..."
 latest_tag=$(curl -sL https://api.github.com/repos/RimworldTogether/Rimworld-Together/releases/latest | grep tag_name | grep -o "[0-9\\.]*")
 if [ -z "$latest_tag" ]; then
@@ -129,11 +116,15 @@ else
     echo "New version $latest_tag available."
     if [ "$auto_update" = true ]; then
         update=true
+    elif [ "$force_old_start" = true ]; then
+        update=false
+        echo "Manual update required. Continuing with the old version."
     else
+        sleep 5  # Pause to ensure the message is seen
         read -p "Automatic update is disabled. Do you want to update to the latest version? (yes/no): " update_choice
         case "$update_choice" in
-            yes|Yes|y|Y) update=true ;;
-            no|No|n|N) update=false ;;
+            y|Y|yes|Yes) update=true ;;
+            n|N|no|No) update=false ;;
             *) echo "Invalid choice. Exiting."; exit 1 ;;
         esac
     fi
@@ -141,11 +132,9 @@ else
     if [ "$update" = true ]; then
         echo "Updating GameServer to version $latest_tag..."
 
-        # Prepare the directory and download the server
         mkdir -p "$folder_name"
         cd "$folder_name" || { echo "Error: Could not change to directory $folder_name"; exit 1; }
 
-        # Download the server files
         echo "Downloading server files..."
         curl -L "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip" -o server.zip
         if [ $? -ne 0 ]; then
@@ -153,7 +142,6 @@ else
             exit 1
         fi
 
-        # Unzip the server files
         echo "Unzipping server files..."
         unzip -o server.zip && rm server.zip
         if [ $? -ne 0 ]; then
@@ -161,7 +149,6 @@ else
             exit 1
         fi
 
-        # Save the version to the version file
         echo "$latest_tag" > "$version_file"
         echo "GameServer updated to version $latest_tag."
     else
@@ -176,29 +163,22 @@ if [ "$use_screen" = true ]; then
         echo "Error: Failed to start the server in a screen session."
         exit 1
     fi
-    echo "Server is now running in a screen session named 'RimWorldServer'. You can attach to the session using 'screen -r RimWorldServer'."
+    echo "Server is running in a screen session named 'RimWorldServer'. You can attach to the session using 'screen -r RimWorldServer'."
 else
     echo "Starting the server directly without screen."
-    ./GameServer
-    if [ $? -ne 0 ]; then
-        echo "Error: Failed to start the server."
-        exit 1
-    fi
-    echo "Server is now running directly."
+    ./GameServer &
+    server_pid=$!
+    echo "Server is now running directly (PID: $server_pid)."
 fi
 ```
 
-### Key Improvements:
-
-1. **Detailed Echo Messages**: Provides detailed messages at every step for clarity.
-2. **Error Handling**: Clear error messages and exit statuses for all critical steps.
-3. **User Prompts**: Clear user prompts to update or continue with the current version.
-4. **Architecture Detection**: Outputs detected architecture for user confirmation.
-5. **Fetch and Update Process**: Detailed steps for fetching and updating the server.
-6. **Start Server Messages**: Clear messages on whether the server is running in a screen session or directly.
+### Key Updates:
+1. **Sleep Before User Choices**: Added `sleep` commands before user prompts to ensure the messages are seen (approximately 5 seconds).
+2. **Helpful Echos**: Ensured all important echos are seen before the server starts sending messages.
 
 ### Usage:
 - **To enable automatic updates**, set `auto_update` to `true`.
+- **To force start the old version without prompting for an update**, set `force_old_start` to `true`.
 - **To run the script** and check for updates or start the server, use the following commands:
   ```bash
   chmod +x start_server.sh
