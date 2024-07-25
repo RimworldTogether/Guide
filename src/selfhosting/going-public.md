@@ -118,7 +118,7 @@ else
     elif [ "$force_old_start" = true ]; then
         update=false
         echo "Manual update required. Continuing with the old version."
-        sleep 5
+        sleep 5  # Pause to ensure the message is seen
     else
         sleep 5  # Pause to ensure the message is seen
         read -p "Automatic update is disabled. Do you want to update to the latest version? (yes/no): " update_choice
@@ -153,13 +153,13 @@ else
         echo "GameServer updated to version $latest_tag."
     else
         echo "Continuing with the current version."
-        sleep 5
     fi
 fi
 
 # Start the server
 if [ "$use_screen" = true ]; then
     echo "Starting the server in a detached screen session..."
+    sleep 5  # Pause to ensure the message is seen
     if ! screen -dmS "RimWorldServer" bash -c './GameServer; exec bash'; then
         echo "Error: Failed to start the server in a screen session."
         exit 1
@@ -167,6 +167,7 @@ if [ "$use_screen" = true ]; then
     echo "Server is running in a screen session named 'RimWorldServer'. You can attach to the session using 'screen -r RimWorldServer'."
 else
     echo "Starting the server directly without screen."
+    sleep 5  # Pause to ensure the message is seen
     ./GameServer &
     server_pid=$!
     echo "Server is now running directly (PID: $server_pid)."
