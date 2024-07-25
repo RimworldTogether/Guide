@@ -75,6 +75,8 @@ use_screen=true  # Set to false if you do not want to use screen
 auto_update=false  # Set to true if you want to enable automatic updates
 version_file="version.txt"  # File to store the current version
 
+echo "Starting RimWorld Together server setup..."
+
 # Check for necessary tools
 if ! command -v curl &>/dev/null; then
     echo "Error: This script requires 'curl'. Please install it before running this script."
@@ -112,17 +114,31 @@ esac
 echo "Detected system architecture: $system_type"
 
 # Fetch the latest release version tag from GitHub
+echo "Fetching the latest version tag from GitHub..."
 latest_tag=$(curl -sL https://api.github.com/repos/RimworldTogether/Rimworld-Together/releases/latest | grep tag_name | grep -o "[0-9\\.]*")
 if [ -z "$latest_tag" ]; then
     echo "Error: Could not fetch the latest version tag from GitHub."
     exit 1
 fi
+echo "Latest version tag is $latest_tag."
 
 # Check if the version is up to date
 if [ -f "$folder_name/$version_file" ] && grep -q "$latest_tag" "$folder_name/$version_file"; then
     echo "GameServer is up to date (version $latest_tag)."
 else
+    echo "New version $latest_tag available."
     if [ "$auto_update" = true ]; then
+        update=true
+    else
+        read -p "Automatic update is disabled. Do you want to update to the latest version? (yes/no): " update_choice
+        case "$update_choice" in
+            yes|Yes|y|Y) update=true ;;
+            no|No|n|N) update=false ;;
+            *) echo "Invalid choice. Exiting."; exit 1 ;;
+        esac
+    fi
+
+    if [ "$update" = true ]; then
         echo "Updating GameServer to version $latest_tag..."
 
         # Prepare the directory and download the server
@@ -130,6 +146,7 @@ else
         cd "$folder_name" || { echo "Error: Could not change to directory $folder_name"; exit 1; }
 
         # Download the server files
+        echo "Downloading server files..."
         curl -L "https://github.com/RimworldTogether/Rimworld-Together/releases/download/$latest_tag/linux-$system_type.zip" -o server.zip
         if [ $? -ne 0 ]; then
             echo "Error: Download failed."
@@ -137,6 +154,7 @@ else
         fi
 
         # Unzip the server files
+        echo "Unzipping server files..."
         unzip -o server.zip && rm server.zip
         if [ $? -ne 0 ]; then
             echo "Error: Unzipping the server files failed."
@@ -147,21 +165,18 @@ else
         echo "$latest_tag" > "$version_file"
         echo "GameServer updated to version $latest_tag."
     else
-        echo "New version $latest_tag available. Automatic update is disabled."
-        echo "To update automatically, set 'auto_update' to true or update the server by hand."
-        exit 0
+        echo "Continuing with the current version."
     fi
 fi
 
 # Start the server
 if [ "$use_screen" = true ]; then
-    echo "Starting the server in a detached screen session named 'RimWorldServer'."
-    # Start the server in a detached screen session
+    echo "Starting the server in a detached screen session..."
     if ! screen -dmS "RimWorldServer" bash -c './GameServer; exec bash'; then
         echo "Error: Failed to start the server in a screen session."
         exit 1
     fi
-    echo "Server running in screen session named 'RimWorldServer'."
+    echo "Server is now running in a screen session named 'RimWorldServer'. You can attach to the session using 'screen -r RimWorldServer'."
 else
     echo "Starting the server directly without screen."
     ./GameServer
@@ -169,16 +184,18 @@ else
         echo "Error: Failed to start the server."
         exit 1
     fi
-    echo "Server running directly without screen."
+    echo "Server is now running directly."
 fi
 ```
 
-### Key Updates:
-1. **System Architecture Output**: The script now outputs the detected system architecture.
-2. **Auto-Update Flag**: Added an `auto_update` variable to control whether the script automatically updates the server. By default, this is set to `false`.
-3. **Descriptive Messages**: Improved messaging around the update process and when starting the server.
-4. **Error Handling**: More robust error handling to ensure clarity.
-5. **Echo Placement**: Ensured that echo messages are displayed before starting the server process.
+### Key Improvements:
+
+1. **Detailed Echo Messages**: Provides detailed messages at every step for clarity.
+2. **Error Handling**: Clear error messages and exit statuses for all critical steps.
+3. **User Prompts**: Clear user prompts to update or continue with the current version.
+4. **Architecture Detection**: Outputs detected architecture for user confirmation.
+5. **Fetch and Update Process**: Detailed steps for fetching and updating the server.
+6. **Start Server Messages**: Clear messages on whether the server is running in a screen session or directly.
 
 ### Usage:
 - **To enable automatic updates**, set `auto_update` to `true`.
