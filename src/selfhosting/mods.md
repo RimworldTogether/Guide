@@ -1,6 +1,5 @@
 
 ---
-
 # Mods
 
 Setting up your server correctly includes configuring your mods effectively. Here’s how mods can be categorized:
@@ -18,7 +17,7 @@ Locate your mod files in the Steam workshop folder specific to your operating sy
 
 ## Additional Notes
 
-### Mod Renaming Tool for Window
+### Mod Renaming Tool for Windows
 Use [this tool](https://github.com/Byte-Nova/Library/releases/latest) specifically designed for Windows to rename your mods to their in-game names rather than their IDs. **Ensure to apply this tool to a copy of your mods, not the actual workshop folder.**
 
 ### Mod Renaming Script for Linux
@@ -68,10 +67,9 @@ for mod in os.listdir(mod_directory):
         print("No valid 'About.xml' file found. Skipping directory.")
 ```
 
-This script organizes mods within your Linux-based Steam mod directory, ensuring that mods are correctly identified and organized. Running this script inside your Steam folder will help prevent conflicts and ensure stability for your server. It's particularly useful for maintaining a clean mod environment, where each mod's folder is named consistently with its in-game name, making them easier to manage and troubleshoot.
+**Note:** This script organizes mods within a copied version of your Linux-based Steam mod directory, ensuring that mods are correctly identified and organized. Running this script inside your Steam folder is not recommended as it will rename Steam folders. Instead, apply it to a copy to prevent conflicts and ensure stability for your server. It's particularly useful for maintaining a clean mod environment, where each mod's folder is named consistently with its in-game name, making them easier to manage and troubleshoot.
 
 ## Troubleshooting
 
-For additional support or to discuss mod-related issues, join our [Discord Server](https://discord.gg/NCsArSaqBW).
-
+#### For additional support or to discuss mod-related issues, join our [Discord Server](https://discord.gg/NCsArSaqBW).
 ---
