@@ -1,11 +1,10 @@
 
 ---
-
 # Making Your Server Public
 
 To make your server publicly accessible, you have several options depending on your setup:
 
-## Port Forwarding (Advanced)
+### Port Forwarding (Advanced)
 Port forwarding enables external access to your server. Here's how to configure it:
 
 1. **Get Your Private IP**:
@@ -19,7 +18,7 @@ Port forwarding enables external access to your server. Here's how to configure 
 
 4. **Join the Server**: Use your public IP (discoverable via [WhatIsMyIPAddress](https://whatismyipaddress.com/)) to connect. Ensure the server is operational and the setup is correct.
 
-## VPN Tunneling (Windows Only)
+### VPN Tunneling (Windows Only)
 Use a VPN to simplify server sharing without complex router configurations:
 
 1. **Download and Install VPN**: We recommend using [Radmin VPN](https://www.radmin-vpn.com/).
@@ -27,14 +26,14 @@ Use a VPN to simplify server sharing without complex router configurations:
 3. **Invite Friends**: Share the network details with your friends so they can join.
 4. **Connect to the Server**: Use the VPN-generated IP to establish a connection.
 
-## LAN (Local Area Network)
+### LAN (Local Area Network)
 For local network connections without internet:
 
 1. **Get Your Private IP**: Retrieve your private IP using `ipconfig` (Windows) or `ip a` (Linux).
 2. **Configure the Server**: Input the private IP into your server's configuration.
 3. **Join the Server**: Connect using the private IP address. Ensure your firewall settings allow traffic on the server port.
 
-## Troubleshooting
+### Troubleshooting
 For additional support, join our [Discord Server](https://discord.gg/NCsArSaqBW).
 
 ---
@@ -58,7 +57,7 @@ This process is essential for allowing external server access, particularly for 
    ```
 5. **Join the Server**: Use your public IP to connect, ensuring everything is configured properly.
 
-Sure, I'll ensure that the script's messages are displayed before the server process starts.
+---
 
 ### Step 2: Automated Installation and Update Script
 
@@ -119,6 +118,7 @@ else
     elif [ "$force_old_start" = true ]; then
         update=false
         echo "Manual update required. Continuing with the old version."
+        sleep 5
     else
         sleep 5  # Pause to ensure the message is seen
         read -p "Automatic update is disabled. Do you want to update to the latest version? (yes/no): " update_choice
@@ -153,6 +153,7 @@ else
         echo "GameServer updated to version $latest_tag."
     else
         echo "Continuing with the current version."
+        sleep 5
     fi
 fi
 
@@ -174,7 +175,7 @@ fi
 
 ### Key Updates:
 1. **Sleep Before User Choices**: Added `sleep` commands before user prompts to ensure the messages are seen (approximately 5 seconds).
-2. **Helpful Echos**: Ensured all important echos are seen before the server starts sending messages.
+2. **Helpful Echoes**: Ensured all important echoes are seen before the server starts sending messages.
 
 ### Usage:
 - **To enable automatic updates**, set `auto_update` to `true`.
@@ -184,34 +185,35 @@ fi
   chmod +x start_server.sh
   ./start_server.sh
   ```
-This ensures the script checks for updates and starts the server, providing clear messages throughout the process.
 
 ### Save the Script
-- Save the above script into a file named `start_server.sh` on your Linux server.
+- Save the script into a file named `start_server.sh` on your Linux server.
 
 ### Make the Script Executable
 - Change the permissions of the script to make it executable by running:
-
-```bash
-chmod +x start_server.sh
-```
+  ```bash
+  chmod +x start_server.sh
+  ```
 
 ### Run the Script to Start Your Server
 - Execute the script to start your RimWorld Together server:
-
-```bash
-./start_server.sh
-```
+  ```bash
+  ./start_server.sh
+  ```
 
 This script will:
 - Automatically detect the architecture of your system and adjust the download URL accordingly.
 - Fetch the latest version of the server software from the RimWorld Together GitHub repository.
+
+
 - Unzip the server files into a specified directory and clean up the downloaded zip file.
-- Start the server inside a `screen` session, which allows the server to run in the background and be reattached at any time.
+- Start the server inside a `screen` session, allowing the server to run in the background and be reattached at any time.
 
-NOTE: Make sure to also follow recommended patch note updates as this script does not automate it.
+**NOTE:** Follow recommended patch note updates as this script does not automate them.
 
-### 3. Renaming Mods with Python
+---
+
+### Renaming Mods with Python
 
 Ensures proper naming conventions for mod directories:
 
@@ -230,7 +232,7 @@ def sanitize_filename(name):
 def find_correct_xml_file(files):
     """ Return 'About.xml' if present, otherwise the first XML file in the list. """
     if "About.xml" in files:
-        return "About.xml"```
+        return "About.xml"
     return files[0] if files else None
 
 # Process each directory in the mods directory
@@ -274,6 +276,7 @@ for folder in os.listdir(required_path):
         print(f"No valid 'About.xml' file found in {about_path}. Skipping directory.")
 ```
 For more information on [Mods](https://rimworldtogether.github.io/Guide/selfhosting/mods.html)
-### Troubleshooting
-Visit the [RimWorld Together Discord Server](https://discord.gg/NCsArSaqBW) for community support.
+
+# Troubleshooting
+#### Visit the [RimWorld Together Discord Server](https://discord.gg/NCsArSaqBW) for community support.
 ---
