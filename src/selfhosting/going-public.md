@@ -148,7 +148,7 @@ else
         echo "GameServer updated to version $latest_tag."
     else
         echo "New version $latest_tag available. Automatic update is disabled."
-        echo "To update manually, set 'auto_update' to true or run the script again after updating the 'auto_update' variable."
+        echo "To update automatically, set 'auto_update' to true or update the server by hand."
         exit 0
     fi
 fi
