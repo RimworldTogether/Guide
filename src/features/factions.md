@@ -1,40 +1,46 @@
 # Factions
-Players are able to create factions with each other that provide useful features on the long run.
 
-## Creating a faction
-To create a faction, please follow these steps:
-* Open the world map and select one of your settlements.
+Players can create factions to access useful features and collaborate more effectively in the long run.
 
-* Click on the `Faction Menu` button.
+## Creating a Faction
 
-* If you are missing a faction, you will be prompted to create one with a custom name.
+To create a faction, follow these steps:
 
-## Things to do with a faction
-Having a faction allows you to invite others to it, which unlocks the following benefits:
-* Faction members settlements and sites will be displayed using a different color than the rest of the players.
+1. **Open World Map**: Select one of your settlements.
+2. **Faction Menu**: Click on the `Faction Menu` button.
+3. **Create Faction**: If you don't belong to a faction, you'll be prompted to create one with a custom name.
 
-* Unlocks the use of `faction sites`, meaning now they will be able to be built instead of normal ones.
+## Benefits of Having a Faction
 
-## Inviting players to the faction
-Other players can be invited to your faction by a very easy step list:
-* Open the world map and select a settlement of the player you want to invite to the faction.
+Having a faction allows you to invite other players, unlocking the following benefits:
 
-* Click on the `Faction Menu` button.
+- **Distinct Color Coding**: Faction members' settlements and sites will be displayed in a different color than those of other players.
+- **Faction Sites**: Enables the construction of `faction sites` instead of normal ones, providing additional benefits. [Learn more about faction sites here](https://rimworldtogether.github.io/Guide/features/sites.html).
 
-* You will get an option to invite them into your faction.
+## Inviting Players to the Faction
 
-## Managing faction's players permissions and membership
-You can manage your faction members by following these steps:
-* Open the world map and select a settlement of the player you want to invite to the faction.
+Invite other players to your faction by following these steps:
 
-* Click on the `Faction Menu` button.
+1. **Open World Map**: Select a settlement of the player you want to invite.
+2. **Faction Menu**: Click on the `Faction Menu` button.
+3. **Send Invite**: Choose the option to invite them to your faction.
 
-* Use the menu that just popped on to do the task you wanted to.
+## Managing Faction Members
 
-## Faction roles
-Factions have different roles that get different permissions depending on the rank:
-* `Owner:` Max rank of the faction and has all possible permissions.
+Manage your faction members by following these steps:
 
-* `Moderator:` Intermitent member with some permissions, allowing site construction and member kicking.
+1. **Open World Map**: Select a settlement of the player you want to manage.
+2. **Faction Menu**: Click on the `Faction Menu` button.
+3. **Manage Members**: Use the menu to perform tasks such as adjusting permissions or removing members.
 
-* `Member:` A barebone faction member with no special privileges.
+## Faction Roles
+
+Factions have different roles with varying permissions:
+
+- **Owner**: The highest rank with all possible permissions.
+- **Moderator**: Intermediate member with permissions to construct sites and kick members.
+- **Member**: Basic faction member with no special privileges.
+
+## Troubleshooting
+
+For additional troubleshooting assistance, please join our [Discord Server](https://discord.gg/NCsArSaqBW).

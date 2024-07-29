@@ -1,14 +1,23 @@
 # In-Game Chat
-While playing, players have access to an in-game chat by either clicking on the `button` at the bottom part of the navigation bar, or pressing the (by default) `P` key.
+
+Players can chat with each other while playing by clicking on the `chat button` at the bottom of the navigation bar or pressing the (default) `P` key.
 
 ## Features
-The in-game chats contains some features, such as the following:
-* A preview of the currently connected players.
 
-* A chat that is able to be seen by everyone currently playing.
+The in-game chat includes several features:
 
-* Ability to input certain commands to use the chat as a console.
+* **Connected Players Preview**: See a list of currently connected players.
 
-* Noise notifications each time a message is received (can be disabled in the mod config).
+* **Public Chat**: Messages can be seen by everyone currently playing on the server.
 
-* Autoscrolling for new messages.
+* **Command Input**: Use the chat as a console by entering specific commands.
+
+* **Notifications**: Receive noise notifications for new messages (can be disabled in the mod config).
+
+* **Autoscrolling**: Automatically scrolls to show new messages.
+
+* **Revamped Interface**: Includes color coding, pinging, and other enhancements.
+
+## Troubleshooting
+
+For additional troubleshooting assistance, please join our [Discord Server](https://discord.gg/NCsArSaqBW).
