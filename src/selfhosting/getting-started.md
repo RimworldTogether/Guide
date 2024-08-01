@@ -10,6 +10,7 @@ This guide will help you set up your own server with our mod. Follow these steps
    Visit our [GitHub Page](https://github.com/RimworldTogether/Rimworld-Together/releases/latest) and download the server files. Choose the version compatible with your operating system (Linux or Windows). Please note that macOS is not supported, and there are no plans to support it in the future.
 
 ## QuickStart
+This guide will assume you're running a windows installation. For a linux instalation look into [going public](https://rimworldtogether.github.io/Guide/selfhosting/going-public.html#step-2-automated-installation-and-update-script).
 
 ### Setting Up
 
