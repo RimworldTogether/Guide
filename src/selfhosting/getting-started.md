@@ -5,7 +5,7 @@ We'll explain the process on how to setup your own server in this page.
 To get started, you can start by installing the [server files](https://github.com/RimworldTogether/Rimworld-Together/releases/latest). Choose the appropriate version for your operation system, either Linux or Windows. We do not currently offer support for mac OS nor do we plan to in the future.
 
 ## QuickStart
-This guide will assume you're running a windows installation.
+This guide will assume you're running a windows installation. For a linux instalation look into [going public](https://rimworldtogether.github.io/Guide/selfhosting/going-public.html#step-2-automated-installation-and-update-script).
 
 Start by creating a folder on your desktop and extracting the server inside of it, you should now be able to launch the server.
 
