@@ -1,6 +1,13 @@
-# World Presence
-Players can see eachother's settlements and sites on the world map.
+## World Presence
 
-When on the world map screen, on the left of your screen, you can search for other settlements with a menu.
+With this mod, players can see each other's settlements, sites, and more on the world map.
 
-Other players cannot occupy the same tile as nor the ones directly adjacent to you.
+### Features:
+
+- **Visible Settlements and Sites**: Players can view each other's structures on the world map.
+- **Search Function**: Use the buttons on the left side of the screen to easily search for other players' structures.
+- **Tile Occupancy**: Other players cannot occupy the same tile or the directly adjacent tiles to your settlement.
+
+## Troubleshooting
+
+For additional troubleshooting assistance, please join our [Discord](https://discord.gg/NCsArSaqBW) server.

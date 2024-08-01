@@ -1,12 +1,17 @@
 # Aiding
-Players can help each other directly using the `aid` feature, sending pawns towards a desired settlement.
 
-## How to use
-* The player must select the settlement they wish send the aid towards from the world view window.
+Players can assist each other directly using the `aid` feature, which allows sending pawns to another player's settlement.
 
-* Once the settlement has been selected, use the `Aid` button and select the pawn you wish to send to help.
+## How to Use
 
-## To keep in mind
-* If the server has the setting enabled, this action has a timer of 1h that players need to wait in order to repeat it with the same player. This setting can be disabled in the `ServerConfig.json` file inside the `Core` folder of the server.
+1. **Select Target Settlement**: From the world view window, select the settlement you wish to send aid to.
+2. **Send Aid**: Click the `Aid` button and choose the pawn you wish to send to help the selected settlement.
 
-* The target of the event must be online.
+## Important Notes
+
+1. **Cooldown Timer**: If the server has the setting enabled, there is a 1-hour cooldown period before you can aid the same player again. This setting can be adjusted in the `ServerConfig.json` file inside the `Core` folder of the server.
+2. **Online Requirement**: The target player must be online to receive aid.
+
+## Troubleshooting
+
+For additional troubleshooting assistance, please join our [Discord server](https://discord.gg/NCsArSaqBW).

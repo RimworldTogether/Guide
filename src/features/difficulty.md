@@ -1,43 +1,47 @@
 # Custom Difficulty
-If you want to customize the server difficulty that every player will use in your server, follow these easy steps!
 
-## Step 1 - Disable custom difficulty
-To ensure that custom difficulty settings are disabled, please follow these steps: 
+Follow these steps to customize the server difficulty for all players on your server:
 
-* Run the server application.
+## Step 1 - Disable Custom Difficulty
 
-* Type in the console window the command: `toggledifficulty`.
+To ensure that custom difficulty settings are disabled:
 
-* Alternatively, you can locate the `DifficultyValues.json` file in your main server folder within the "Core" subfolder.
-
-* Change the value of `UseCustomDifficulty` to `false`.
+1. **Run the Server Application**: Launch the RimWorld Together server application.
+2. **Disable Custom Difficulty**:
+    - Open the server console and type the command: `toggledifficulty`.
+    - Alternatively, locate the `DifficultyValues.json` file in the "Core" subfolder of your server folder and set `"UseCustomDifficulty"` to `false`.
 
 By doing this, you'll ensure that custom difficulty settings are turned off and the default settings are in place.
 
-## Step 2 - Give yourself admin permission
-* Log into the server and give yourself admin permissions by typing in the server console window:
-`op "YourUsername"`.
+## Step 2 - Give Yourself Admin Permission
 
-## Step 3 -  Access the storyteller selection menu
-To access the in-game storyteller selection menu, follow these steps:
-* Press the ESC key.
+1. **Log into the Server**: Ensure you are logged into the server.
+2. **Grant Admin Permissions**: Open the server console and type: `op "YourUsername"`.
 
-* Navigate to `Options`.
+## Step 3 - Access the Storyteller Selection Menu
 
-* Select `Gameplay`.
+1. **Open the Storyteller Menu**:
+    - Press the `ESC` key.
+    - Navigate to `Options`.
+    - Select `Gameplay`.
+    - Choose `Storyteller Settings`.
+    - Click on `Modify`.
 
-* Choose `Storyteller Settings`.
+## Step 4 - Change the Difficulty Values
 
-* Click on `Modify`.
+1. **Adjust Difficulty**:
+    - In the Storyteller selection menu, select the `Custom` option.
+    - Adjust the difficulty settings to your preference.
+    - Click the `Send Difficulty` button at the bottom right of the window to apply the changes to the server.
 
-## Step 4 - Change the difficulty values.
-In the Storyteller selection menu, Click on the "Custom" option, where you then  adjust your values just as you would in a regular game.
-* Once you've completed adjusting your settings, click the button located at the bottom right of the same window labeled "Send Difficulty" to transmit the values to the server.
+## Step 5 - Enable Custom Difficulty
 
-## Step 5 - Enable custom difficulty.
-* Once you've confirmed the difficulty values you wish to use, be sure to enable custom difficulty again through the server console by typing: `toggledifficulty`
+1. **Enable Custom Difficulty**:
+    - Open the server console and type the command: `toggledifficulty`.
+    - Alternatively, locate the `DifficultyValues.json` file in the "Core" subfolder of your server folder and set `"UseCustomDifficulty"` to `true`.
 
-* Alternatively, you can locate the `DifficultyValues.json` file in your server folder within the "core" subfolder
+By following these steps, you ensure that your custom difficulty settings are applied to the server.
 
-* Change the value of `UseCustomDifficulty` to `true`
+## Troubleshooting
 
+For additional troubleshooting assistance, please join our [Discord server](https://discord.gg/NCsArSaqBW).
