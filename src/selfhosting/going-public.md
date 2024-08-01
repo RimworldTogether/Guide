@@ -124,7 +124,6 @@ else
         echo "Manual update required. Continuing with the old version."
         sleep 5  # Pause to ensure the message is seen
     else
-        sleep 5  # Pause to ensure the message is seen
         read -p "Automatic update is disabled. Do you want to update to the latest version? (yes/no): " update_choice
         case "$update_choice" in
             y|Y|yes|Yes) update=true ;;
