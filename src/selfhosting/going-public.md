@@ -71,13 +71,33 @@ This process is essential for allowing external server access, particularly for 
 ```bash
 #!/bin/bash
 
-# Configuration
-folder_name="RimWorldServer"  # Adjust folder name as per your preference
-system_type=$(uname -m)  # Auto-detect system architecture
-use_screen=true  # Set to false if you do not want to use screen
-auto_update=false  # Set to true if you want to enable automatic updates
-force_old_start=false  # Set to true to skip update prompts and start the old version
-version_file="version.txt"  # File to store the current version
+if [ $# -eq 0 ]; then
+    # Configuration
+    folder_name="RimWorldServer"  # Adjust folder name as per your preference
+    system_type=$(uname -m)  # Auto-detect system architecture
+    use_screen=true  # Set to false if you do not want to use screen
+    auto_update=false  # Set to true if you want to enable automatic updates
+    force_old_start=false  # Set to true to skip update prompts and start the old version
+    version_file="version.txt"  # File to store the current version
+elif [ $# -eq 1 ]; then
+    if [ -f "$1" ]; then
+        echo "using config file $1."
+        . "$1"
+        for var in folder_name system_type use_screen auto_update force_old_start version_file; do
+            if [ -z "${!var}" ]; then
+                echo "file $1 doesn't specify $var"
+                echo "copy paste the #Configuration section into the config file"
+                exit 1
+            fi
+        done
+    else
+        echo "$1 is not a file."
+        exit 1
+    fi
+else
+    echo "this script can only be started with a maximum of one argument. the optional argument is the filename of a file in shell syntax"
+    exit 1
+fi
 
 echo "Starting RimWorld Together server setup..."
 
@@ -124,7 +144,6 @@ else
         echo "Manual update required. Continuing with the old version."
         sleep 5  # Pause to ensure the message is seen
     else
-        sleep 5  # Pause to ensure the message is seen
         read -p "Automatic update is disabled. Do you want to update to the latest version? (yes/no): " update_choice
         case "$update_choice" in
             y|Y|yes|Yes) update=true ;;
@@ -157,6 +176,7 @@ else
         echo "GameServer updated to version $latest_tag."
     else
         echo "Continuing with the current version."
+        cd "$folder_name" || { echo "Error: Could not change to directory $folder_name"; exit 1; }
     fi
 fi
 
@@ -172,15 +192,18 @@ if [ "$use_screen" = true ]; then
 else
     echo "Starting the server directly without screen."
     sleep 5  # Pause to ensure the message is seen
+    set -m # enabled background managment (needed for fg 1)
     ./GameServer &
     server_pid=$!
     echo "Server is now running directly (PID: $server_pid)."
+    fg 1 # takes the Gameserver Process to the foreground, so that input reaches the server.
 fi
 ```
 
 ### Key Updates:
 1. **Sleep Before User Choices**: Added `sleep` commands before user prompts to ensure the messages are seen (approximately 5 seconds).
 2. **Helpful Echoes**: Ensured all important echoes are seen before the server starts sending messages.
+3. **Config File**: you can use a config file to store configurations
 
 ### Usage:
 - **To enable automatic updates**, set `auto_update` to `true`.
@@ -190,11 +213,15 @@ fi
   chmod +x start_server.sh
   ./start_server.sh
   ```
+- **To use a config file**
+  copy the #Configuration section of the script into another file, and change the values to your liking, that start it woth
+  ```bash
+  ./start_server.sh FILENAME
+  ```
+  this allows you manage multiple different directories/servers with one script file, and multiple config files
 
 ### Save the Script
-- Save the script into a file named `start
-
-_server.sh` on your Linux server.
+- Save the script into a file named `start_server.sh` on your Linux server.
 
 ### Make the Script Executable
 - Change the permissions of the script to make it executable by running:
