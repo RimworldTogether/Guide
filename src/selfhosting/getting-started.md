@@ -31,6 +31,8 @@ This guide will help you set up your own server with our mod. Follow these steps
 
 DLC files, available as `Extras.zip`, can be found on our [GitHub Page](https://github.com/RimworldTogether/Rimworld-Together) and are intended for server-side use only. Treat DLCs as mods.
 
+**Important:** The `Core` DLC must be placed in either the `Required` or `Optional` folder, as it is counted as a DLC. If `Core` is not included in either of these folders, you will be disallowed from joining the server.
+
 ## Configuration Files
 
 ### ActionValues File
