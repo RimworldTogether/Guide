@@ -1,20 +1,20 @@
-## Creating Sites
+# Creating Sites
 
 With this mod, players can create customizable sites on the world map to enhance their gameplay in RimWorld. Sites are structures that provide valuable resources over time.
 
-### To create a site:
+## To create a site
 
 1. Move a caravan to a free space on the map.
 2. Use the "Site" button to start the creation process.
 
-### Site Ranks:
+### Site Ranks
 
 * **Personal Sites**: Offer resources in exchange for manpower. Generally more affordable and require ongoing maintenance.
 * **Faction Sites**: Similar to personal sites but typically more expensive and require no maintenance.
 
-### Site Types and Resources:
+### Site Types and Resources
 
-#### Default Settings:
+#### Default Settings
 
 * **Farmland**: Produces potatoes. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 potatoes.
 * **Quarry**: Produces steel. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 steel.

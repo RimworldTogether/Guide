@@ -8,7 +8,8 @@ The server owner can set a silver fee for building roads and enable or disable r
 
 * By default, all roads are free to build and enabled.
 
-### Default Settings:
+### Default Settings
+
 ```json
 {
   "AllowDirtPath": true,
@@ -39,6 +40,7 @@ All in-game roads are available for construction, including:
 * Stone Road
 * Asphalt Path
 * Asphalt Highway
+
 ## Troubleshooting
 
 For additional troubleshooting assistance, please join our [Discord](https://discord.gg/NCsArSaqBW) server.

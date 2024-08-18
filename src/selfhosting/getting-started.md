@@ -11,6 +11,8 @@ This guide will help you set up your own server with our mod. Follow these steps
 
 ## QuickStart
 
+This guide will assume you're running a windows installation. For a linux instalation look into [going public](https://rimworldtogether.github.io/Guide/selfhosting/going-public.html#step-2-automated-installation-and-update-script).
+
 ### Setting Up
 
 1. **Create a Folder**  

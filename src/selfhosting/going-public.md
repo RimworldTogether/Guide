@@ -1,4 +1,3 @@
-
 ---
 
 # Making Your Server Public
@@ -11,8 +10,7 @@ Port forwarding enables external access to your server. Here's how to configure 
 
 1. **Get Your Private IP**:
    - **Windows**: Open Command Prompt and type `ipconfig`.
-   - **Linux**: Open Terminal and type `ip a` or `ifconfig`.
-   Identify your network's IPv4 Address (e.g., `192.168.x.x`).
+   - **Linux**: Open Terminal and type `ip a` or `ifconfig`. Identify your network's IPv4 Address (e.g., `192.168.x.x`).
 
 2. **Access Router Settings**: Enter your default gateway IP into your browser to access your router's settings.
 
@@ -46,23 +44,23 @@ For additional support, join our [Discord Server](https://discord.gg/NCsArSaqBW)
 
 ---
 
-## Docker Setup for RimWorld Together
+# Docker Setup for RimWorld Together
 
-### Clone the Repository
+## Clone the Repository
 
 ```bash
 git clone https://github.com/RimworldTogether/Rimworld-Together.git
 cd Rimworld-Together
 ```
 
-### Update the Local Copy
+## Update the Local Copy
 
 ```bash
 git fetch origin
 git merge origin/main
 ```
 
-### Build the Docker Image
+## Build the Docker Image
 
 Build the Docker image for the RimWorld Together server:
 
@@ -70,7 +68,7 @@ Build the Docker image for the RimWorld Together server:
 docker build -t rimworld-together:latest .
 ```
 
-### Run the Docker Container
+## Run the Docker Container
 
 Start the server with the following command:
 
@@ -78,7 +76,7 @@ Start the server with the following command:
 docker run -it --rm -v "$(pwd)/data:/Data" -p 25555:25555 rimworld-together:latest
 ```
 
-### (Optional) Run in Detached Mode
+## (Optional) Run in Detached Mode
 
 If you want the container to run in the background:
 
@@ -86,7 +84,7 @@ If you want the container to run in the background:
 docker run -d --rm -v "$(pwd)/data:/Data" -p 25555:25555 rimworld-together:latest
 ```
 
-### (Optional) Using Docker Compose
+## (Optional) Using Docker Compose
 
 For easier management, you can use Docker Compose. Create a `docker-compose.yml` file with the following content:
 
@@ -108,7 +106,7 @@ Start the service with:
 docker-compose up -d
 ```
 
-### Accessing the Server Console
+## Accessing the Server Console
 
 To access the running server console, use the following command:
 
@@ -124,11 +122,11 @@ docker ps
 
 ---
 
-# Linux Server Setup and Management Guide for RimWorld Together
+## Linux Server Setup and Management Guide for RimWorld Together
 
 ### 1. Making Your Server Public
 
-#### Port Forwarding (Advanced)
+#### **Port Forwarding (Advanced)**
 
 This process is essential for allowing external server access, particularly for those hosting on their own Linux machines:
 
@@ -146,11 +144,9 @@ This process is essential for allowing external server access, particularly for 
 
 5. **Join the Server**: Use your public IP to connect, ensuring everything is configured properly.
 
----
+## Step 2: Automated Installation and Update Script
 
-### Step 2: Automated Installation and Update Script
-
-**1. Create the Startup Script**
+### 1. Create the Startup Script
 
 - Create a file named `start_server.sh` with the following contents:
 
@@ -165,32 +161,30 @@ auto_update=false  # Set to true if you want to enable automatic updates
 force_old_start=false  # Set to true to skip update prompts and start the old version
 version_file="version.txt"  # File to store the current version
 
-echo "Starting RimWorld Together server setup..."
-
-# Check for necessary tools
-for tool in curl unzip; do
-    if ! command -v $tool &>/dev/null; then
-        echo "Error: $tool is required but not installed."
+# Load Configuration from file if provided
+if [ $# -eq 1 ]; then
+    if [ -f "$1" ]; then
+        echo "Using config file $1."
+        . "$1"
+        # Ensure all necessary variables are set
+        for var in folder_name system_type use_screen auto_update force_old_start version_file; do
+            if [ -z "${!var}" ]; then
+                echo "Error: $var is not set in $1."
+                exit 1
+            fi
+        done
+    else
+        echo "Error: $1 is not a file."
         exit 1
     fi
-done
-
-if [ "$use_screen" = true ] && ! command -v screen &>/dev/null; then
-    echo "Error: screen is required but not installed. Set use_screen to false if you do not want to use it."
+elif [ $# -gt 1 ]; then
+    echo "Error: This script accepts a maximum of one argument (config file)."
     exit 1
 fi
 
-# Detect system architecture
-case "$system_type" in
-    x86_64) system_type="x64" ;;
-    armv7l|armv6l) system_type="arm" ;;
-    aarch64) system_type="arm64" ;;
-    *) echo "Error: Unsupported architecture ($system_type). Supported: x64, arm, arm64."; exit 1 ;;
-esac
-echo "Detected system architecture: $system_type"
+echo "Starting RimWorld Together server setup..."
 
 # Fetch the latest version tag from GitHub
-echo "Fetching the latest version tag from GitHub..."
 latest_tag=$(curl -sL https://api.github.com/repos/RimworldTogether/Rimworld-Together/releases/latest | grep tag_name | grep -o "[0-9\\.]*")
 if [ -z "$latest_tag" ]; then
     echo "Error: Could not fetch the latest version tag from GitHub."
@@ -232,7 +226,9 @@ else
             exit 1
         fi
 
-        echo "Unzipping server files..."
+        echo
+
+ "Unzipping server files..."
         unzip -o server.zip && rm server.zip
         if [ $? -ne 0 ]; then
             echo "Error: Unzipping the server files failed."
@@ -243,6 +239,7 @@ else
         echo "GameServer updated to version $latest_tag."
     else
         echo "Continuing with the current version."
+        cd "$folder_name" || { echo "Error: Could not change to directory $folder_name"; exit 1; }
     fi
 fi
 
@@ -258,16 +255,13 @@ if [ "$use_screen" = true ]; then
 else
     echo "Starting the server directly without screen."
     sleep 5  # Pause to ensure the message is seen
+    set -m  # Enable job control (needed for fg 1)
     ./GameServer &
     server_pid=$!
     echo "Server is now running directly (PID: $server_pid)."
+    fg 1  # Bring the GameServer process to the foreground so that input reaches the server.
 fi
 ```
-
-### Key Updates
-
-1. **Sleep Before User Choices**: Added `sleep` commands before user prompts to ensure the messages are seen (approximately 5 seconds).
-2. **Helpful Echoes**: Ensured all important echoes are seen before the server starts sending messages.
 
 ### Usage
 
@@ -280,7 +274,17 @@ fi
   ./start_server.sh
   ```
 
-**Save the Script**
+- **To use a config file**:
+  - Copy the `#Configuration` section of the script into another file, and change the values to your liking.
+  - Start the script with:
+
+    ```bash
+    ./start_server.sh FILENAME
+    ```
+
+  This allows you to manage multiple different directories/servers with one script file and multiple config files.
+
+### Save the Script
 
 - Save the script into a file named `start_server.sh` on your Linux server.
 
@@ -309,11 +313,9 @@ This script will:
 
 **NOTE:** Follow recommended patch note updates as this script does not automate them.
 
----
+## Additional Notes
 
-# Additional Notes
-
-Please head over to the [Mods section](https://rimworldtogether.github.io/Guide/selfhosting/mods.html) of the guide to finish setting up your server's mods
+Please head over to the [Mods section](https://rimworldtogether.github.io/Guide/selfhosting/mods.html) of the guide to finish setting up your server's mods.
 
 ## Troubleshooting
 
