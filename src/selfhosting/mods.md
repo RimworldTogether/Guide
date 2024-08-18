@@ -1,4 +1,3 @@
-
 ---
 
 # Mods
@@ -19,12 +18,23 @@ Locate your mod files in the Steam workshop folder specific to your operating sy
 ## Additional Notes
 
 ### Mod Renaming Tool for Windows
+
 Use [this tool](https://github.com/Byte-Nova/Library/releases/latest) specifically designed for Windows to rename your mods to their in-game names rather than their IDs. **Ensure to apply this tool to a copy of your mods, not the actual workshop folder.**
 
 ### Mod Renaming Script for Linux
+
 For Linux users, the following Python script automates renaming mod directories to match their in-game names. This helps maintain order and compatibility, especially after updates:
 
 ```python
+rename = True # change to False to disable renaming, and print instead (will lower the debug/logging prints)
+
+# Define the directories where mods are stored
+mod_directories = [
+    "/path/to/your/mods/required-enforced",  # Adjust this path for your Linux system
+    "/path/to/your/mods/optional",
+    "/path/to/your/mods/forbidden"
+]
+
 import os
 import xml.etree.ElementTree as ET
 import re
@@ -38,13 +48,6 @@ def find_correct_xml_file(files):
     if "About.xml" in files:
         return "About.xml"
     return files[0] if files else None
-
-# Define the directories where mods are stored
-mod_directories = [
-    "/path/to/your/mods/required-enforced",  # Adjust this path for your Linux system
-    "/path/to/your/mods/optional",
-    "/path/to/your/mods/forbidden"
-]
 
 for mod_directory in mod_directories:
     for mod in os.listdir(mod_directory):
@@ -84,10 +87,10 @@ for mod_directory in mod_directories:
             print(f"No valid 'About.xml' file found in {about_path}. Skipping directory.")
 ```
 
-**Note:** This script organizes mods within a copied version of your Linux-based Steam mod directory, ensuring that mods are correctly identified and organized. Running this script inside your Steam folder is not recommended as it will rename Steam folders. Instead, apply it to a copy to prevent conflicts and ensure stability for your server. It's particularly useful for maintaining a clean mod environment, where each mod's folder is named consistently with its in-game name, making them easier to manage and troubleshoot.
+**Note:** This script organizes mods within a copied version of your Linux-based Steam mod directory, ensuring that mods are correctly identified and organized. Running this script inside your Steam folder is not recommended as it will rename Steam folders. You can change the `rename` variable to `False` to just print the output, which can be used inside the Steam folder (the folder name is just the ID before the hyphen in the output). Instead, apply it to a copy to prevent conflicts and ensure stability for your server. It's particularly useful for maintaining a clean mod environment, where each mod's folder is named consistently with its in-game name, making them easier to manage and troubleshoot.
 
 ## Troubleshooting
 
-#### For additional support or to discuss mod-related issues, join our [Discord Server](https://discord.gg/NCsArSaqBW).
+### For additional support or to discuss mod-related issues, join our [Discord Server](https://discord.gg/NCsArSaqBW)
 
 ---

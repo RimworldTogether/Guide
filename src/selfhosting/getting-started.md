@@ -11,6 +11,8 @@ This guide will help you set up your own server with our mod. Follow these steps
 
 ## QuickStart
 
+This guide will assume you're running a windows installation. For a linux instalation look into [going public](https://rimworldtogether.github.io/Guide/selfhosting/going-public.html#step-2-automated-installation-and-update-script).
+
 ### Setting Up
 
 1. **Create a Folder**  
@@ -30,6 +32,8 @@ This guide will help you set up your own server with our mod. Follow these steps
 ## DLCs
 
 DLC files, available as `Extras.zip`, can be found on our [GitHub Page](https://github.com/RimworldTogether/Rimworld-Together) and are intended for server-side use only. Treat DLCs as mods.
+
+**Important:** The `Core` DLC must be placed in either the `Required` or `Optional` folder, as it is counted as a DLC. If `Core` is not included in either of these folders, you will be disallowed from joining the server.
 
 ## Configuration Files
 

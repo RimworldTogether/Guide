@@ -6,7 +6,7 @@ Traveling towards another player's settlement allows you to raid it in various w
 
 1. **Form a Caravan**:
    - Move a `caravan` to the settlement of the player you want to raid.
-   
+
 2. **Choose Raid Type**:
    - **Online Raid**: If the target player is online, you can engage in an `online raid`.
    - **Offline Raid**: If the target player is offline, you can perform an `offline raid`.

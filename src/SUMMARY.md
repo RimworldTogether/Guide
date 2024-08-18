@@ -1,12 +1,15 @@
 # Summary
+
 [Introduction](README.md)
 
-# Self-Hosting
+## Self-Hosting
+
 - [Getting Started](selfhosting/getting-started.md)
 - [Mods](selfhosting/mods.md)
 - [Going Public](selfhosting/going-public.md)
 
-# Features
+## Features
+
 - [Visiting](features/visiting.md)
 - [Raiding](features/raiding.md)
 - [Spying](features/spying.md)

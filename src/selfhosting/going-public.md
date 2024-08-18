@@ -1,4 +1,3 @@
-
 ---
 
 # Making Your Server Public
@@ -6,12 +5,12 @@
 To make your server publicly accessible, you have several options depending on your setup:
 
 ## Port Forwarding (Advanced)
+
 Port forwarding enables external access to your server. Here's how to configure it:
 
 1. **Get Your Private IP**:
    - **Windows**: Open Command Prompt and type `ipconfig`.
-   - **Linux**: Open Terminal and type `ip a` or `ifconfig`.
-   Identify your network's IPv4 Address (e.g., `192.168.x.x`).
+   - **Linux**: Open Terminal and type `ip a` or `ifconfig`. Identify your network's IPv4 Address (e.g., `192.168.x.x`).
 
 2. **Access Router Settings**: Enter your default gateway IP into your browser to access your router's settings.
 
@@ -22,6 +21,7 @@ Port forwarding enables external access to your server. Here's how to configure 
 5. **Join the Server**: Use your public IP (discoverable via [WhatIsMyIPAddress](https://whatismyipaddress.com/)) to connect. Ensure the server is operational and the setup is correct.
 
 ## VPN Tunneling (Windows Only)
+
 Use a VPN to simplify server sharing without complex router configurations:
 
 1. **Download and Install VPN**: We recommend using [Radmin VPN](https://www.radmin-vpn.com/).
@@ -30,6 +30,7 @@ Use a VPN to simplify server sharing without complex router configurations:
 4. **Connect to the Server**: Use the VPN-generated IP to establish a connection.
 
 ## LAN (Local Area Network)
+
 For local network connections without internet:
 
 1. **Get Your Private IP**: Retrieve your private IP using `ipconfig` (Windows) or `ip a` (Linux).
@@ -38,7 +39,86 @@ For local network connections without internet:
 4. **Join the Server**: Connect using the private IP address. Ensure your firewall settings allow traffic on the server port.
 
 ## Troubleshooting
+
 For additional support, join our [Discord Server](https://discord.gg/NCsArSaqBW).
+
+---
+
+# Docker Setup for RimWorld Together
+
+## Clone the Repository
+
+```bash
+git clone https://github.com/RimworldTogether/Rimworld-Together.git
+cd Rimworld-Together
+```
+
+## Update the Local Copy
+
+```bash
+git fetch origin
+git merge origin/main
+```
+
+## Build the Docker Image
+
+Build the Docker image for the RimWorld Together server:
+
+```bash
+docker build -t rimworld-together:latest .
+```
+
+## Run the Docker Container
+
+Start the server with the following command:
+
+```bash
+docker run -it --rm -v "$(pwd)/data:/Data" -p 25555:25555 rimworld-together:latest
+```
+
+## (Optional) Run in Detached Mode
+
+If you want the container to run in the background:
+
+```bash
+docker run -d --rm -v "$(pwd)/data:/Data" -p 25555:25555 rimworld-together:latest
+```
+
+## (Optional) Using Docker Compose
+
+For easier management, you can use Docker Compose. Create a `docker-compose.yml` file with the following content:
+
+```yaml
+version: '3'
+services:
+  rimworld-together:
+    build: .
+    ports:
+      - "25555:25555"
+    volumes:
+      - ./data:/Data
+    restart: unless-stopped
+```
+
+Start the service with:
+
+```bash
+docker-compose up -d
+```
+
+## Accessing the Server Console
+
+To access the running server console, use the following command:
+
+```bash
+docker attach <container_name>
+```
+
+You can find the container name using:
+
+```bash
+docker ps
+```
 
 ---
 
@@ -46,26 +126,28 @@ For additional support, join our [Discord Server](https://discord.gg/NCsArSaqBW)
 
 ### 1. Making Your Server Public
 
-#### Port Forwarding (Advanced)
+#### **Port Forwarding (Advanced)**
+
 This process is essential for allowing external server access, particularly for those hosting on their own Linux machines:
 
 1. **Get Your Private IP**: Open a terminal and type `ip a` or `ifconfig`. Locate the IPv4 address linked to your network interface (e.g., `eth0` or `wlan0`).
 2. **Access Router Settings**: Enter the default gateway shown in your command output into a browser to modify your router’s settings.
 3. **Set Up Port Forwarding**: In the router settings under "Advanced Settings", establish a new rule for TCP port 25555 linked to your noted private IP address. Confirm the changes.
 4. **Configure Firewall on Linux**: Depending on which firewall management tool your distribution uses, apply the corresponding command:
+
    ```bash
    sudo iptables -A INPUT -p tcp --dport 25555 -j ACCEPT  # iptables
    sudo ufw allow 25555/tcp                              # UFW
    sudo firewall-cmd --add-port=25555/tcp --permanent    # firewalld
    sudo firewall-cmd --reload
    ```
+
 5. **Join the Server**: Use your public IP to connect, ensuring everything is configured properly.
 
----
+## Step 2: Automated Installation and Update Script
 
-### Step 2: Automated Installation and Update Script
+### 1. Create the Startup Script
 
-**1. Create the Startup Script**
 - Create a file named `start_server.sh` with the following contents:
 
 ```bash
@@ -79,32 +161,30 @@ auto_update=false  # Set to true if you want to enable automatic updates
 force_old_start=false  # Set to true to skip update prompts and start the old version
 version_file="version.txt"  # File to store the current version
 
-echo "Starting RimWorld Together server setup..."
-
-# Check for necessary tools
-for tool in curl unzip; do
-    if ! command -v $tool &>/dev/null; then
-        echo "Error: $tool is required but not installed."
+# Load Configuration from file if provided
+if [ $# -eq 1 ]; then
+    if [ -f "$1" ]; then
+        echo "Using config file $1."
+        . "$1"
+        # Ensure all necessary variables are set
+        for var in folder_name system_type use_screen auto_update force_old_start version_file; do
+            if [ -z "${!var}" ]; then
+                echo "Error: $var is not set in $1."
+                exit 1
+            fi
+        done
+    else
+        echo "Error: $1 is not a file."
         exit 1
     fi
-done
-
-if [ "$use_screen" = true ] && ! command -v screen &>/dev/null; then
-    echo "Error: screen is required but not installed. Set use_screen to false if you do not want to use it."
+elif [ $# -gt 1 ]; then
+    echo "Error: This script accepts a maximum of one argument (config file)."
     exit 1
 fi
 
-# Detect system architecture
-case "$system_type" in
-    x86_64) system_type="x64" ;;
-    armv7l|armv6l) system_type="arm" ;;
-    aarch64) system_type="arm64" ;;
-    *) echo "Error: Unsupported architecture ($system_type). Supported: x64, arm, arm64."; exit 1 ;;
-esac
-echo "Detected system architecture: $system_type"
+echo "Starting RimWorld Together server setup..."
 
 # Fetch the latest version tag from GitHub
-echo "Fetching the latest version tag from GitHub..."
 latest_tag=$(curl -sL https://api.github.com/repos/RimworldTogether/Rimworld-Together/releases/latest | grep tag_name | grep -o "[0-9\\.]*")
 if [ -z "$latest_tag" ]; then
     echo "Error: Could not fetch the latest version tag from GitHub."
@@ -146,7 +226,9 @@ else
             exit 1
         fi
 
-        echo "Unzipping server files..."
+        echo
+
+ "Unzipping server files..."
         unzip -o server.zip && rm server.zip
         if [ $? -ne 0 ]; then
             echo "Error: Unzipping the server files failed."
@@ -157,6 +239,7 @@ else
         echo "GameServer updated to version $latest_tag."
     else
         echo "Continuing with the current version."
+        cd "$folder_name" || { echo "Error: Could not change to directory $folder_name"; exit 1; }
     fi
 fi
 
@@ -172,43 +255,57 @@ if [ "$use_screen" = true ]; then
 else
     echo "Starting the server directly without screen."
     sleep 5  # Pause to ensure the message is seen
+    set -m  # Enable job control (needed for fg 1)
     ./GameServer &
     server_pid=$!
     echo "Server is now running directly (PID: $server_pid)."
+    fg 1  # Bring the GameServer process to the foreground so that input reaches the server.
 fi
 ```
 
-### Key Updates:
-1. **Sleep Before User Choices**: Added `sleep` commands before user prompts to ensure the messages are seen (approximately 5 seconds).
-2. **Helpful Echoes**: Ensured all important echoes are seen before the server starts sending messages.
+### Usage
 
-### Usage:
 - **To enable automatic updates**, set `auto_update` to `true`.
 - **To force start the old version without prompting for an update**, set `force_old_start` to `true`.
 - **To run the script** and check for updates or start the server, use the following commands:
+
   ```bash
   chmod +x start_server.sh
   ./start_server.sh
   ```
 
-### Save the Script
-- Save the script into a file named `start
+- **To use a config file**:
+  - Copy the `#Configuration` section of the script into another file, and change the values to your liking.
+  - Start the script with:
 
-_server.sh` on your Linux server.
+    ```bash
+    ./start_server.sh FILENAME
+    ```
+
+  This allows you to manage multiple different directories/servers with one script file and multiple config files.
+
+### Save the Script
+
+- Save the script into a file named `start_server.sh` on your Linux server.
 
 ### Make the Script Executable
+
 - Change the permissions of the script to make it executable by running:
+
   ```bash
   chmod +x start_server.sh
   ```
 
 ### Run the Script to Start Your Server
+
 - Execute the script to start your RimWorld Together server:
+
   ```bash
   ./start_server.sh
   ```
 
 This script will:
+
 - Automatically detect the architecture of your system and adjust the download URL accordingly.
 - Fetch the latest version of the server software from the RimWorld Together GitHub repository.
 - Unzip the server files into a specified directory and clean up the downloaded zip file.
@@ -216,11 +313,9 @@ This script will:
 
 **NOTE:** Follow recommended patch note updates as this script does not automate them.
 
----
+## Additional Notes
 
-# Additional Notes
-
-Please head over to the [Mods section](https://rimworldtogether.github.io/Guide/selfhosting/mods.html) of the guide to finish setting up your server's mods
+Please head over to the [Mods section](https://rimworldtogether.github.io/Guide/selfhosting/mods.html) of the guide to finish setting up your server's mods.
 
 ## Troubleshooting
 

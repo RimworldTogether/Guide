@@ -1,13 +1,13 @@
-## Real-Time Visiting
+# Real-Time Visiting
 
 With this mod, players can visit each other’s settlements in real time!
 
-### Visiting Features:
+## Visiting Features
 
 - **Initiate a Visit**: Move a caravan to the settlement you want to visit and click the "Visit" button. If the player you are visiting is online, you can engage in an online visit. If they are offline, you can conduct an offline visit.
 - **Offline Visits**: Offline visits load a copy of the player's last saved state. Your actions will not affect their actual game, allowing you to view their setups even when they are not online.
 
-### Additional Features:
+### Additional Features
 
 - **Defense Spots**: Designate areas where pawns will defend when offline, specifically for player raids.
 - **Transfer Drop Spots**: Designate areas where goods should land during player trades.
