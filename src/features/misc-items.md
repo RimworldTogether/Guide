@@ -20,6 +20,6 @@ The hitching spot is used to tie animals and form caravans, preventing animals f
 
 ## Troubleshooting
 
-For additional troubleshooting assistance, please join our [Discord Server](https://discord.gg/NCsArSaqBW).
+For additional troubleshooting assistance, please join our [Discord Server](https://discord.gg/yUF2ec8Vt8).
 
 For a better understanding of how these items function during raids, refer to the [Raiding](https://rimworldtogether.github.io/Guide/features/raiding.html) section.

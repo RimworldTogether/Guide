@@ -40,4 +40,4 @@ Trade efficiently and enjoy the collaborative experience of sharing resources in
 
 ## Troubleshooting
 
-For additional troubleshooting assistance, please join our [Discord](https://discord.gg/NCsArSaqBW) server.
+For additional troubleshooting assistance, please join our [Discord](https://discord.gg/yUF2ec8Vt8) server.

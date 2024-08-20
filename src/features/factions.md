@@ -43,4 +43,4 @@ Factions have different roles with varying permissions:
 
 ## Troubleshooting
 
-For additional troubleshooting assistance, please join our [Discord Server](https://discord.gg/NCsArSaqBW).
+For additional troubleshooting assistance, please join our [Discord Server](https://discord.gg/yUF2ec8Vt8).

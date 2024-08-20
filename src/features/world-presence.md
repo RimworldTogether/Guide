@@ -10,4 +10,4 @@ With this mod, players can see each other's settlements, sites, and more on the 
 
 ## Troubleshooting
 
-For additional troubleshooting assistance, please join our [Discord](https://discord.gg/NCsArSaqBW) server.
+For additional troubleshooting assistance, please join our [Discord](https://discord.gg/yUF2ec8Vt8) server.

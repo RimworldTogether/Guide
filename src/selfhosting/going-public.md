@@ -38,7 +38,7 @@ For local network connections without internet:
 4. **Join the Server**: Connect using the private IP address. Ensure your firewall settings allow traffic on the server port.
 
 ## Troubleshooting
-For additional support, join our [Discord Server](https://discord.gg/NCsArSaqBW).
+For additional support, join our [Discord Server](https://discord.gg/yUF2ec8Vt8).
 
 ---
 
@@ -224,6 +224,6 @@ Please head over to the [Mods section](https://rimworldtogether.github.io/Guide/
 
 ## Troubleshooting
 
-For additional support or to discuss mod-related issues, join our [Discord Server](https://discord.gg/NCsArSaqBW).
+For additional support or to discuss mod-related issues, join our [Discord Server](https://discord.gg/yUF2ec8Vt8).
 
 ---

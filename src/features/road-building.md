@@ -41,4 +41,4 @@ All in-game roads are available for construction, including:
 * Asphalt Highway
 ## Troubleshooting
 
-For additional troubleshooting assistance, please join our [Discord](https://discord.gg/NCsArSaqBW) server.
+For additional troubleshooting assistance, please join our [Discord](https://discord.gg/yUF2ec8Vt8) server.

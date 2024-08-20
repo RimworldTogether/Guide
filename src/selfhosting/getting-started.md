@@ -91,6 +91,6 @@ DLC files, available as `Extras.zip`, can be found on our [GitHub Page](https://
 
 ## Troubleshooting
 
-For additional help and information, join our [Discord Server](https://discord.gg/NCsArSaqBW).
+For additional help and information, join our [Discord Server](https://discord.gg/yUF2ec8Vt8).
 
 ---

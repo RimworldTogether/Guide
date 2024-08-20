@@ -19,4 +19,4 @@ To engage in the global market, follow these steps:
 
 ## Troubleshooting
 
-For additional troubleshooting assistance, please join our [Discord Server](https://discord.gg/NCsArSaqBW).
+For additional troubleshooting assistance, please join our [Discord Server](https://discord.gg/yUF2ec8Vt8).

@@ -30,4 +30,4 @@ These default values can be customized by the server owner. Sites generate resou
 
 ## Troubleshooting
 
-For additional troubleshooting assistance, please join our [Discord](https://discord.gg/NCsArSaqBW) server.
+For additional troubleshooting assistance, please join our [Discord](https://discord.gg/yUF2ec8Vt8) server.

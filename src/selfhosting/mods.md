@@ -88,6 +88,6 @@ for mod_directory in mod_directories:
 
 ## Troubleshooting
 
-#### For additional support or to discuss mod-related issues, join our [Discord Server](https://discord.gg/NCsArSaqBW).
+#### For additional support or to discuss mod-related issues, join our [Discord Server](https://discord.gg/yUF2ec8Vt8).
 
 ---

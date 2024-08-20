@@ -13,4 +13,4 @@ Spying loads a copy of the other player's last saved state, meaning that nothing
 
 ## Troubleshooting
 
-For additional troubleshooting assistance, please join our [Discord](https://discord.gg/NCsArSaqBW) server.
+For additional troubleshooting assistance, please join our [Discord](https://discord.gg/yUF2ec8Vt8) server.
