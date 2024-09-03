@@ -2,9 +2,22 @@
 
 Players can trigger various events at each other's colonies by selecting a settlement on the world map and paying a fee determined by the server owner.
 
-## Fees
+## Configuration
 
-The server owner can set the silver cost for events in the `EventValues.json` file located in the `Core` folder. By default, all events are free to trigger.
+The server owner can set the silver cost for all events and add references to modded ones through the "Events" folder of the server.
+
+To modify an existing event, just open the event file with the name of the event you want to modify, there you'll have access to toggling it and modifying its values.
+
+To add new events, you'll have to investigate around the mod that adds the event you want to use, and then create a new file using the same structure of the other events, and introduce all the necessary details (event name, defName, availability and price) into it. If everything is alright it should show as a loaded event on the server.
+
+```C#
+{
+  "Name": "Event Name",
+  "DefName": "Event DefName",
+  "Cost": 500,
+  "IsEnabled": true
+}
+```
 
 ## How to Use
 
@@ -16,27 +29,6 @@ The server owner can set the silver cost for events in the `EventValues.json` fi
 - **Cooldown Period**: If the server has the setting enabled, there is a 1-hour cooldown before the same player can be targeted again. This can be adjusted in the `ServerConfig.json` file inside the `Core` folder.
 - **Silver Requirement**: The player triggering the event must carry enough silver to cover the event fee.
 - **Target Must Be Online**: The target player must be online for the event to be triggered.
-
-## Available Events
-
-With this mod, players can send various in-game events to each other for a silver fee set by the server owner. Available events include:
-
-- **Raid**: An enemy raid will attack the target.
-- **Infestation**: A sudden infestation of dangerous creatures will occur.
-- **Mech Cluster**: A mechanoid cluster will land near the target, posing a threat.
-- **Toxic Fallout**: A toxic fallout event will blanket the area, affecting crops and health.
-- **Manhunter Pack**: A pack of manhunting animals will attack the target.
-- **Wanderer**: A wanderer with potentially useful traits will arrive at the settlement.
-- **Farm Animals**: Additional farm animals will appear at the target location.
-- **Ship Chunk**: A chunk of a crashed ship will land, containing valuable resources.
-- **Trader Caravan**: A caravan of traders will arrive, offering goods for trade.
-
-## How to Trigger Events
-
-1. Move a caravan to the settlement of the player you wish to send an event to.
-2. Click the `Events` button.
-3. Choose an event from the list.
-4. Pay the associated fee with silver.
 
 ## Troubleshooting
 
