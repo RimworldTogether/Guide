@@ -1,5 +1,3 @@
-# In-Game Chat
-
 Players can chat with each other while playing by clicking on the `chat button` at the bottom of the navigation bar or pressing the (default) `P` key.
 
 ## Features
@@ -16,7 +14,9 @@ The in-game chat includes several features:
 
 * **Autoscrolling**: Automatically scrolls to show new messages.
 
-* **Revamped Interface**: Includes color coding, pinging, and other enhancements.
+* **Color coding**: A neat way to display text with different colors.
+
+* **Whispers**: Send messages privately from one player to another.
 
 ## Troubleshooting
 
