@@ -6,28 +6,35 @@ With this mod, players can create customizable sites on the world map to enhance
 
 1. Move a caravan to a free space on the map.
 2. Use the "Site" button to start the creation process.
+3. Pick a site.
+
+### To configure a site:
+1. Move a caravan to a site.
+2. Use the "Configure" button to start the configuration process.
+3. Pick a site and reward.
+
+Sites configurations affect all your rewards for that type of sites, not just one. Players can however have different configs in between them.
 
 ### Site Ranks:
 
-* **Personal Sites**: Offer resources in exchange for manpower. Generally more affordable and require ongoing maintenance.
-* **Faction Sites**: Similar to personal sites but typically more expensive and require no maintenance.
+Sites are owned by the player that creates them and are independant of factions. They will however benefit every member of the owner's current faction.
 
 ### Site Types and Resources:
 
-#### Default Settings:
-
-* **Farmland**: Produces potatoes. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 potatoes.
-* **Quarry**: Produces steel. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 steel.
-* **Sawmill**: Produces wood. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 wood.
-* **Bank**: Produces silver. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 silver.
-* **Laboratory**: Produces components. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 components.
-* **Refinery**: Produces chemfuel. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 chemfuel.
-* **Herbal Workshop**: Produces herbal medicine. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 herbal medicine.
-* **Textile Factory**: Produces cloth. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 cloth.
-* **Food Processor**: Produces simple meals. Costs 1000 silver for personal sites and 2000 silver for faction sites. Rewards 50 simple meals.
-
-These default values can be customized by the server owner. Sites generate resources every 30 minutes of gameplay, depending on the type of site. Adjust the cost and reward settings to suit your server's needs and balance.
+Sites can be configured to give any item to the players. We'll go over every field in the configuration file (SiteValues.json)
+1. TimeIntervalMinute: The amount of minutes between rewards.
+2. DefName: Defname of the site. Do not touch except if you know what you are doing.
+3. OverrideName: Leave empty for default. Change if you want to change the name of the site to better reflect its rewards.
+4. OverrideDescription: Leave empty for default. Change if you want to change the description of the site to better reflect its rewards.
+5. DefNameCost: Defname of the item required to purchase this site. A defname is the true name of the item, like showcased in the devmode menu "spawn thing"
+6. Cost: Amount of the defname listed above required to purchase the site.
+7. Rewards: A reward the client can pick. Clients can only pick one.
+8. RewardDef: Defname of the item given to the player
+9. RewardAmount: Amount of the reward given to the player.
 
 ## Troubleshooting
-
+1. Make sure your defnames are correct.
+2. Make sure every reward has an amount.
+3. Make sure that the DefNameCost and Cost are the same lenght
+   
 For additional troubleshooting assistance, please join our [Discord](https://discord.gg/yUF2ec8Vt8) server.
